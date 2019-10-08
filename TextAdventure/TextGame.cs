@@ -6,11 +6,15 @@ using SadConsole;
 using SadConsole.Input;
 using Console = SadConsole.Console;
 using Microsoft.Xna.Framework;
+using TextAdventure.Core.UI;
+using SadConsole.Controls;
 
 namespace TextAdventure
 {
     public class TextGame : SadConsole.Game
     {
+        HealthProgressBar HPBar;
+
         public TextGame() : base("", 80, 25, null)
         {
             Instance.Window.AllowAltF4 = false;
@@ -21,22 +25,38 @@ namespace TextAdventure
             // Generally you don't want to hide the mouse from the user
             IsMouseVisible = true;
 
-            Console console = new Console(80, 25);
-            console.FillWithRandomGarbage();
-            console.Fill(new Rectangle(3, 3, 23, 3), Color.Turquoise, Color.Black, 0, 0);
-            console.Print(4, 4, "Test, oh wow it works !");
+            base.Initialize();
 
+            ControlsConsole console = new ControlsConsole(80, 25);
+
+            HPBar = new HealthProgressBar(console.Width, 1, HorizontalAlignment.Left);
+
+            var consoleTheme = SadConsole.Themes.Library.Default.Clone();
+            consoleTheme.ProgressBarTheme = new HealthProgressBarTheme();
+
+            console.Theme = consoleTheme;
+
+            console.Add(HPBar);
+
+            //Global.CurrentScreen = console;
             SadConsole.Global.CurrentScreen.Children.Add(console);
         }
 
-        protected override void Update(GameTime obj)
-        {
+        bool done = false;
 
+        protected override void Update(GameTime gameTime)
+        {
+            if (!done && gameTime.TotalGameTime.Seconds == 1)
+            {
+                done = true;
+                HPBar.Progress = 0.5f;
+            }
+            base.Update(gameTime);
         }
 
-        protected override void Draw(GameTime obj)
+        protected override void Draw(GameTime gameTime)
         {
-
+            base.Draw(gameTime);
         }
     }
 }
