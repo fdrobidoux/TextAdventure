@@ -6,8 +6,6 @@ namespace TextAdventure.Core.Concepts
 {
     public abstract class Context
     {
-        Game game;
-
         String[] possibleActions;
 
         String[] interactibles;
