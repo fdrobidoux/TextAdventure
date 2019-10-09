@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Runtime.Serialization;
 using Microsoft.Xna.Framework;
 using SadConsole;
@@ -7,14 +8,9 @@ using XNAMathHelper = Microsoft.Xna.Framework.MathHelper;
 
 namespace TextAdventure.Core.UI
 {
+    [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        [DataMember]
-        protected float freshDmgValue;
-
-        [DataMember]
-        public int freshDmgFillSize;
-
         [DataMember]
         public bool freshDmgIsDecreasing => startDropTimer.IsPaused;
 
@@ -23,14 +19,15 @@ namespace TextAdventure.Core.UI
 
         public float FreshDmgValue
         {
-            get => freshDmgValue;
-            set {
-                freshDmgValue = value;
-            }
+            get;
+            set;
         }
 
         [DataMember]
-        public TimeSpan FreshDmgDecrementAnimDuration { get; protected set; } // TODO: Rename this field to be more precise (by timespan)
+        public int FreshDmgFillSize { get; set; }
+
+        [DataMember]
+        public TimeSpan FreshDmgDecrementAnimDuration { get; protected set; } = TimeSpan.FromSeconds(5); // TODO: Rename this field to be more precise (by timespan)
 
         private void bindFreshDmgOnProgressChanged()
         {
@@ -48,12 +45,12 @@ namespace TextAdventure.Core.UI
             if (diff > 0.0f) // Positive
             {
                 // increased +
-                freshDmgValue = XNAMathHelper.Clamp(freshDmgValue + diff, 0.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, 0.0f, 1.0f);
             }
             else if (diff < 0.0f) // Negative
             {
                 // decreased -
-                freshDmgValue = XNAMathHelper.Clamp(freshDmgValue + diff, 0.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
             }
 
             // Assign current value as last value checked.
@@ -67,20 +64,20 @@ namespace TextAdventure.Core.UI
         private void updateFreshDamageBar(TimeSpan time)
         {
             startDropTimer.Update(Parent, time);
-            updateFreshDmgDblAnimation();
+            updateFreshDmgDblAnimation(time);
         }
 
-#region "TIMER - Start dropping"
+        #region "TIMER - Start dropping --------------------------------------------------------------"
 
         public Timer startDropTimer;
 
-        protected TimeSpan howLongUntilStartDropTimerTrigger = TimeSpan.FromSeconds(1); // TODO: Change this as needed.
+        protected TimeSpan howLongUntilStartDropTimerTrigger = TimeSpan.FromMilliseconds(1000); // TODO: Change this as needed.
 
         private void createStartDropTimer()
         {
             if (startDropTimer == null)
             {
-                startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true };
+                startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true, Repeat = false };
                 startDropTimer.TimerElapsed += StartDropTimer_OnTimerElapsed;
             }
         }
@@ -88,11 +85,12 @@ namespace TextAdventure.Core.UI
         private void StartDropTimer_OnTimerElapsed(object sender, EventArgs e)
         {
             startFreshDmgDblAnimation();
+            startDropTimer.IsPaused = true;
         }
 
-#endregion
+        #endregion //                    --------------------------------------------------------------"
 
-#region "Ease out dropping"
+        #region "--- Ease out dropping ----------------------------------------------------------------"
 
         public DoubleAnimation freshDmgDblAnim;
 
@@ -102,14 +100,18 @@ namespace TextAdventure.Core.UI
             {
                 Duration = FreshDmgDecrementAnimDuration,
                 EasingFunction = new Expo() { Mode = EasingMode.Out },
-                StartingValue = freshDmgValue,
+                StartingValue = 1.0f,
                 EndingValue = 0.0d
             };
+
+            cumulMsTime = 0.0d;
 
             freshDmgDblAnim.Start();
         }
 
-        private void updateFreshDmgDblAnimation()
+        double cumulMsTime = 0.0d;
+
+        private void updateFreshDmgDblAnimation(TimeSpan time)
         {
             float currentValue;
             float calculatedFill;
@@ -119,25 +121,25 @@ namespace TextAdventure.Core.UI
 
             if (freshDmgDblAnim.IsFinished)
             {
-                freshDmgFillSize = 0;
-                freshDmgValue = 0.0f;
+                FreshDmgFillSize = 0;
                 return;
             }
 
-            currentValue = (float)freshDmgDblAnim.CurrentValue;
-            freshDmgValue = currentValue;
+            cumulMsTime += time.TotalMilliseconds;
+            currentValue = (float)freshDmgDblAnim.GetValueForDuration(cumulMsTime);
+            FreshDmgValue = currentValue;
 
             calculatedFill = CalcFreshDmgFillSize();
-            freshDmgFillSize = (int)(calculatedFill - (calculatedFill * currentValue));
+            FreshDmgFillSize = (int)(calculatedFill * currentValue);
         }
 
-#endregion
+        #endregion //                  -------------------------------------------------------------
 
         private int CalcFreshDmgFillSize()
         {
-            if (freshDmgValue == 0) return 0;
-            else if (freshDmgValue == 1) return controlSize;
-            else return (int)(controlSize * freshDmgValue);
+            if (FreshDmgValue == 0) return 0;
+            else if (FreshDmgValue == 1) return controlSize;
+            else return (int)(controlSize * FreshDmgValue);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using SadConsole;
 using SadConsole.Controls;
@@ -9,24 +10,20 @@ namespace TextAdventure.Core.UI
 {
     public class HealthProgressBarTheme : SadConsole.Themes.ProgressBarTheme
     {
+        public Cell FreshDamage;
+
         public HealthProgressBarTheme() : base()
         {
-            this.SetBackground(Color.Red);
-            this.SetForeground(Color.White);
-            Colors = SadConsole.Themes.Library.Default.ProgressBarTheme.Colors;
+
         }
 
         public override void UpdateAndDraw(ControlBase control, TimeSpan time)
         {
             bool initialDirtiness = control.IsDirty;
 
-            if (!(control is HealthProgressBar hpBar))
-            {
-                base.UpdateAndDraw(control, time);
-                return;
-            }
+            if (!(control is HealthProgressBar hpBar)) return;
 
-            base.UpdateAndDraw(control, time);
+            // Check dirtiness again from fresh damage stuff.
 
             if (!initialDirtiness) return;
 
@@ -35,9 +32,9 @@ namespace TextAdventure.Core.UI
             if (hpBar.IsHorizontal)
             {
                 if (hpBar.HorizontalAlignment == HorizontalAlignment.Left)
-                    fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.freshDmgFillSize, hpBar.Height);
+                    fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
                 else
-                    fillRect = new Rectangle((hpBar.Width - hpBar.fillSize) + hpBar.freshDmgFillSize, 0, hpBar.freshDmgFillSize, hpBar.Height);
+                    fillRect = new Rectangle((hpBar.Width - hpBar.fillSize), 0, hpBar.FreshDmgFillSize, hpBar.Height);
             }
             else
             {
@@ -48,7 +45,11 @@ namespace TextAdventure.Core.UI
                     fillRect = new Rectangle(0, hpBar.Height - hpBar.fillSize, hpBar.Width, hpBar.fillSize);
             }
 
-            hpBar.Surface.Fill(fillRect, Colors.Black, Colors.White, 178);
+            Debug.WriteLine(fillRect.ToString());
+
+            hpBar.Surface.Fill(fillRect, Color.Black, Color.White, 177, 0);
+
+            base.UpdateAndDraw(control, time);
         }
 
         public override void Attached(ControlBase control)
@@ -64,6 +65,8 @@ namespace TextAdventure.Core.UI
         public override void RefreshTheme(Colors themeColors)
         {
             base.RefreshTheme(themeColors);
+
+            FreshDamage = new Cell(themeColors.Black, themeColors.White);
         }
     }
 }
