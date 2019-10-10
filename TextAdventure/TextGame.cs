@@ -21,9 +21,9 @@ namespace TextAdventure
         public TextGame() : base("", 80, 25, null)
         {
             testEvents = new[] {
-                new HealthBarTimelineEvent( 0.5f, TimeSpan.FromSeconds(1), false ),
-                new HealthBarTimelineEvent( 0.25f, TimeSpan.FromMilliseconds(1500), false ),
-                new HealthBarTimelineEvent( 0.75f, TimeSpan.FromSeconds(3), false ),
+                new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
+                new HealthBarTimelineEvent(0.25f, TimeSpan.FromMilliseconds(1500)),
+                new HealthBarTimelineEvent(0.75f, TimeSpan.FromSeconds(3)),
             };
         }
 
@@ -77,13 +77,12 @@ namespace TextAdventure
     {
         public float newValue;
         public TimeSpan when;
-        public bool isDone;
+        public bool isDone = false;
 
-        public HealthBarTimelineEvent(float @newValue, TimeSpan @when, bool @isDone)
+        public HealthBarTimelineEvent(float @newValue, TimeSpan @when)
         {
             this.newValue = @newValue;
             this.when = @when;
-            this.isDone = @isDone;
         }
     }
 }

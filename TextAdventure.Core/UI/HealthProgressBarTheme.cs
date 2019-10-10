@@ -12,45 +12,41 @@ namespace TextAdventure.Core.UI
     {
         public Cell FreshDamage;
         public Rectangle lastRect;
+        private PreviousBarValues prevVals;
 
         public HealthProgressBarTheme() : base()
         {
-
         }
 
         public override void UpdateAndDraw(ControlBase control, TimeSpan time)
         {
             bool initialDirtiness = control.IsDirty;
-            
+
             base.UpdateAndDraw(control, time);
 
-            if (!(control is HealthProgressBar hpBar)) return;
-
-            // Check dirtiness again from fresh damage stuff.
-
-            if (!initialDirtiness) return;
-
-            Rectangle fillRect;
-
-            if (hpBar.IsHorizontal)
+            if ((control is HealthProgressBar hpBar) && initialDirtiness && !prevVals.Equals(hpBar))
             {
-                if (hpBar.HorizontalAlignment == HorizontalAlignment.Left)
+                Rectangle fillRect;
+
+                if (hpBar.FreshDmgValue >= 0.0f)
+                {
                     fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
+                }
+                else if (hpBar.FreshDmgValue <= 0.0f)
+                {
+                    fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
+                }
                 else
-                    fillRect = new Rectangle((hpBar.Width - hpBar.fillSize), 0, hpBar.FreshDmgFillSize, hpBar.Height);
-            }
-            else
-            {
-                // TODO: Actual code; This won't work yet !!!!
-                if (hpBar.VerticalAlignment == VerticalAlignment.Top)
-                    fillRect = new Rectangle(0, 0, hpBar.Width, hpBar.FreshDmgFillSize);
-                else
-                    fillRect = new Rectangle(0, hpBar.Height - hpBar.fillSize, hpBar.Width, hpBar.FreshDmgFillSize);
+                {
+                    fillRect = lastRect;
+                }
+
+                prevVals = new PreviousBarValues(hpBar);
+                lastRect = fillRect;
             }
 
-            //Debug.WriteLine(fillRect.ToString());
-            hpBar.IsDirty = true;
-            hpBar.Surface.Fill(fillRect, Color.Black, Color.IndianRed, 177, 0);
+            control.IsDirty = true;
+            control.Surface.Fill(lastRect, Color.IndianRed, Color.White, 178, 0);
         }
 
         public override void Attached(ControlBase control)
@@ -68,6 +64,23 @@ namespace TextAdventure.Core.UI
             base.RefreshTheme(themeColors);
 
             FreshDamage = new Cell(themeColors.Black, themeColors.White);
+        }
+
+        private struct PreviousBarValues: IEquatable<HealthProgressBar>
+        {
+            public int freshDmgFillSize;
+            public int fillSize;
+
+            public PreviousBarValues(int freshDmgFillSize, int fillSize)
+            {
+                this.freshDmgFillSize = freshDmgFillSize;
+                this.fillSize = fillSize;
+            }
+
+            public PreviousBarValues(HealthProgressBar other) : this(other.FreshDmgFillSize, other.fillSize) { }
+
+            public bool Equals(HealthProgressBar other) 
+                => (other.fillSize == this.fillSize) && (other.FreshDmgFillSize == this.freshDmgFillSize);
         }
     }
 }

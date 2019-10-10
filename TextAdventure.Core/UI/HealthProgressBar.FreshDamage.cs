@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 using Microsoft.Xna.Framework;
 using SadConsole;
 using SadConsole.EasingFunctions;
+using TextAdventure.Core.Mechanics;
 using XNAMathHelper = Microsoft.Xna.Framework.MathHelper;
 
 namespace TextAdventure.Core.UI
@@ -11,8 +12,7 @@ namespace TextAdventure.Core.UI
     [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        [DataMember]
-        public bool freshDmgIsDecreasing => startDropTimer.IsPaused;
+        public FreshDamage FreshDmg { get; set; } = new FreshDamage();
 
         [DataMember]
         protected float lastProgressValue;
@@ -36,15 +36,13 @@ namespace TextAdventure.Core.UI
             if (diff == 0.0f)
                 return;
 
-            if (diff > 0.0f) // Positive
+            if (diff > 0.0f)
             {
-                // increased +
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, 0.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, -1.0f, 1.0f);
             }
-            else if (diff < 0.0f) // Negative
+            else if (diff < 0.0f)
             {
-                // decreased -
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, -1.0f, 1.0f);
             }
 
             FreshDmgFillSize = (int)(FreshDmgValue * Width);
@@ -59,7 +57,7 @@ namespace TextAdventure.Core.UI
 
         private void updateFreshDamageBar(TimeSpan time)
         {
-            startDropTimer.Update(Parent, time);
+            startDropTimer.Update(null, time);
             updateFreshDmgDblAnimation();
         }
 
@@ -71,11 +69,8 @@ namespace TextAdventure.Core.UI
 
         private void createStartDropTimer()
         {
-            if (startDropTimer == null)
-            {
-                startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true };
-                startDropTimer.TimerElapsed += StartDropTimer_OnTimerElapsed;
-            }
+            startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true, Repeat = false };
+            startDropTimer.TimerElapsed += StartDropTimer_OnTimerElapsed;
         }
 
         private void StartDropTimer_OnTimerElapsed(object sender, EventArgs e)
@@ -95,28 +90,37 @@ namespace TextAdventure.Core.UI
             dmgDoubleAnimation = new DoubleAnimation()
             {
                 Duration = decrementAnimDuration,
-                EasingFunction = new SadConsole.EasingFunctions.Linear(),
-                StartingValue = FreshDmgValue,
-                EndingValue = 0.0d
+                EasingFunction = new SadConsole.EasingFunctions.Linear() { Mode = EasingMode.InOut },
             };
+
+            if (FreshDmgValue >= 0.0f)
+            {
+                dmgDoubleAnimation.StartingValue = FreshDmgValue;
+                dmgDoubleAnimation.EndingValue = 0.0d;
+            }
+            else if (FreshDmgValue <= 0.0f)
+            {
+                dmgDoubleAnimation.StartingValue = FreshDmgValue;
+                dmgDoubleAnimation.EndingValue = 0.0d;
+            }
 
             dmgDoubleAnimation.Start();
         }
 
         private void updateFreshDmgDblAnimation()
         {
-            if (dmgDoubleAnimation == null || !dmgDoubleAnimation.IsStarted || dmgDoubleAnimation.IsFinished)
+            if (dmgDoubleAnimation == null || !dmgDoubleAnimation.IsStarted)
                 return;
+
+            if (dmgDoubleAnimation.IsFinished)
+            {
+                FreshDmgFillSize = 0;
+                return;
+            }
 
             FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
             FreshDmgFillSize = (int)(controlSize * FreshDmgValue);
         }
-
-        #endregion // -----------------------------------------------------------------------------"
-
-        #region "Ease out incrementing ------------------------------------------------------------"
-
-
 
         #endregion // -----------------------------------------------------------------------------"
     }
