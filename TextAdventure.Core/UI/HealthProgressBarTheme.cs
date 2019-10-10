@@ -11,6 +11,7 @@ namespace TextAdventure.Core.UI
     public class HealthProgressBarTheme : SadConsole.Themes.ProgressBarTheme
     {
         public Cell FreshDamage;
+        public Rectangle lastRect;
 
         public HealthProgressBarTheme() : base()
         {
@@ -20,6 +21,8 @@ namespace TextAdventure.Core.UI
         public override void UpdateAndDraw(ControlBase control, TimeSpan time)
         {
             bool initialDirtiness = control.IsDirty;
+            
+            base.UpdateAndDraw(control, time);
 
             if (!(control is HealthProgressBar hpBar)) return;
 
@@ -40,16 +43,14 @@ namespace TextAdventure.Core.UI
             {
                 // TODO: Actual code; This won't work yet !!!!
                 if (hpBar.VerticalAlignment == VerticalAlignment.Top)
-                    fillRect = new Rectangle(0, 0, hpBar.Width, hpBar.fillSize);
+                    fillRect = new Rectangle(0, 0, hpBar.Width, hpBar.FreshDmgFillSize);
                 else
-                    fillRect = new Rectangle(0, hpBar.Height - hpBar.fillSize, hpBar.Width, hpBar.fillSize);
+                    fillRect = new Rectangle(0, hpBar.Height - hpBar.fillSize, hpBar.Width, hpBar.FreshDmgFillSize);
             }
 
-            Debug.WriteLine(fillRect.ToString());
-
-            hpBar.Surface.Fill(fillRect, Color.Black, Color.White, 177, 0);
-
-            base.UpdateAndDraw(control, time);
+            //Debug.WriteLine(fillRect.ToString());
+            hpBar.IsDirty = true;
+            hpBar.Surface.Fill(fillRect, Color.Black, Color.IndianRed, 177, 0);
         }
 
         public override void Attached(ControlBase control)

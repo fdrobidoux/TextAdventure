@@ -15,12 +15,16 @@ namespace TextAdventure
     {
         HealthProgressBar HPBar;
         Label HPLabel;
-        Label AnotherLabel;
-        bool done = false;
+
+        HealthBarTimelineEvent[] testEvents;
 
         public TextGame() : base("", 80, 25, null)
         {
-
+            testEvents = new[] {
+                new HealthBarTimelineEvent( 0.5f, TimeSpan.FromSeconds(1), false ),
+                new HealthBarTimelineEvent( 0.25f, TimeSpan.FromMilliseconds(1500), false ),
+                new HealthBarTimelineEvent( 0.75f, TimeSpan.FromSeconds(3), false ),
+            };
         }
 
         protected override void Initialize()
@@ -49,19 +53,16 @@ namespace TextAdventure
 
         protected override void Update(GameTime gameTime)
         {
-            if (!done && gameTime.TotalGameTime.Seconds == 1)
+            foreach (HealthBarTimelineEvent _event in testEvents)
             {
-                done = true;
-                HPBar.Progress = 0.5f;
+                if (!_event.isDone && gameTime.TotalGameTime >= _event.when)
+                {
+                    _event.isDone = true;
+                    HPBar.Progress = _event.newValue;
+                }
             }
 
             HPLabel.DisplayText = $"fDFS={HPBar.FreshDmgFillSize};fDV={HPBar.FreshDmgValue};";
-
-            // Track stuff
-            if (HPBar.freshDmgDblAnim != null)
-            {
-                
-            }
 
             base.Update(gameTime);
         }
@@ -69,6 +70,20 @@ namespace TextAdventure
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
+        }
+    }
+
+    internal class HealthBarTimelineEvent
+    {
+        public float newValue;
+        public TimeSpan when;
+        public bool isDone;
+
+        public HealthBarTimelineEvent(float @newValue, TimeSpan @when, bool @isDone)
+        {
+            this.newValue = @newValue;
+            this.when = @when;
+            this.isDone = @isDone;
         }
     }
 }

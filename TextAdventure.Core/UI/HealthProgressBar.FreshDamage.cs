@@ -17,17 +17,11 @@ namespace TextAdventure.Core.UI
         [DataMember]
         protected float lastProgressValue;
 
-        public float FreshDmgValue
-        {
-            get;
-            set;
-        }
+        [DataMember]
+        public float FreshDmgValue { get; set; }
 
         [DataMember]
         public int FreshDmgFillSize { get; set; }
-
-        [DataMember]
-        public TimeSpan FreshDmgDecrementAnimDuration { get; protected set; } = TimeSpan.FromSeconds(5); // TODO: Rename this field to be more precise (by timespan)
 
         private void bindFreshDmgOnProgressChanged()
         {
@@ -53,6 +47,8 @@ namespace TextAdventure.Core.UI
                 FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
             }
 
+            FreshDmgFillSize = (int)(FreshDmgValue * Width);
+
             // Assign current value as last value checked.
             lastProgressValue = progressValue;
 
@@ -64,20 +60,20 @@ namespace TextAdventure.Core.UI
         private void updateFreshDamageBar(TimeSpan time)
         {
             startDropTimer.Update(Parent, time);
-            updateFreshDmgDblAnimation(time);
+            updateFreshDmgDblAnimation();
         }
 
-        #region "TIMER - Start dropping --------------------------------------------------------------"
+        #region "TIMER - Start dropping ----------------------------------------------------------"
 
         public Timer startDropTimer;
 
-        protected TimeSpan howLongUntilStartDropTimerTrigger = TimeSpan.FromMilliseconds(1000); // TODO: Change this as needed.
+        protected TimeSpan howLongUntilStartDropTimerTrigger = TimeSpan.FromMilliseconds(250);
 
         private void createStartDropTimer()
         {
             if (startDropTimer == null)
             {
-                startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true, Repeat = false };
+                startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true };
                 startDropTimer.TimerElapsed += StartDropTimer_OnTimerElapsed;
             }
         }
@@ -85,61 +81,43 @@ namespace TextAdventure.Core.UI
         private void StartDropTimer_OnTimerElapsed(object sender, EventArgs e)
         {
             startFreshDmgDblAnimation();
-            startDropTimer.IsPaused = true;
         }
 
-        #endregion //                    --------------------------------------------------------------"
+        #endregion // -----------------------------------------------------------------------------"
 
-        #region "--- Ease out dropping ----------------------------------------------------------------"
+        #region "Ease out dropping ----------------------------------------------------------------"
 
-        public DoubleAnimation freshDmgDblAnim;
+        public DoubleAnimation dmgDoubleAnimation;
+        public TimeSpan decrementAnimDuration = TimeSpan.FromSeconds(1);
 
         private void startFreshDmgDblAnimation()
         {
-            freshDmgDblAnim = new DoubleAnimation()
+            dmgDoubleAnimation = new DoubleAnimation()
             {
-                Duration = FreshDmgDecrementAnimDuration,
-                EasingFunction = new Expo() { Mode = EasingMode.Out },
-                StartingValue = 1.0f,
+                Duration = decrementAnimDuration,
+                EasingFunction = new SadConsole.EasingFunctions.Linear(),
+                StartingValue = FreshDmgValue,
                 EndingValue = 0.0d
             };
 
-            cumulMsTime = 0.0d;
-
-            freshDmgDblAnim.Start();
+            dmgDoubleAnimation.Start();
         }
 
-        double cumulMsTime = 0.0d;
-
-        private void updateFreshDmgDblAnimation(TimeSpan time)
+        private void updateFreshDmgDblAnimation()
         {
-            float currentValue;
-            float calculatedFill;
-
-            if (freshDmgDblAnim == null || !freshDmgDblAnim.IsStarted)
+            if (dmgDoubleAnimation == null || !dmgDoubleAnimation.IsStarted || dmgDoubleAnimation.IsFinished)
                 return;
 
-            if (freshDmgDblAnim.IsFinished)
-            {
-                FreshDmgFillSize = 0;
-                return;
-            }
-
-            cumulMsTime += time.TotalMilliseconds;
-            currentValue = (float)freshDmgDblAnim.GetValueForDuration(cumulMsTime);
-            FreshDmgValue = currentValue;
-
-            calculatedFill = CalcFreshDmgFillSize();
-            FreshDmgFillSize = (int)(calculatedFill * currentValue);
+            FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
+            FreshDmgFillSize = (int)(controlSize * FreshDmgValue);
         }
 
-        #endregion //                  -------------------------------------------------------------
+        #endregion // -----------------------------------------------------------------------------"
 
-        private int CalcFreshDmgFillSize()
-        {
-            if (FreshDmgValue == 0) return 0;
-            else if (FreshDmgValue == 1) return controlSize;
-            else return (int)(controlSize * FreshDmgValue);
-        }
+        #region "Ease out incrementing ------------------------------------------------------------"
+
+
+
+        #endregion // -----------------------------------------------------------------------------"
     }
 }
