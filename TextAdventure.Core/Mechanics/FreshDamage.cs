@@ -9,7 +9,5 @@ namespace TextAdventure.Core.Mechanics
         public float Value { get; set; }
 
         public float PreviousValue { get; protected set; }
-
-        public float 
     }
 }

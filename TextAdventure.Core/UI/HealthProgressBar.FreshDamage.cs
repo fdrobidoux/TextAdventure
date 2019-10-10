@@ -38,11 +38,11 @@ namespace TextAdventure.Core.UI
 
             if (diff > 0.0f)
             {
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, -1.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, 0.0f, 1.0f);
             }
             else if (diff < 0.0f)
             {
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, -1.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
             }
 
             FreshDmgFillSize = (int)(FreshDmgValue * Width);
