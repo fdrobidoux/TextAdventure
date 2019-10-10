@@ -12,10 +12,10 @@ namespace TextAdventure.Core.UI
     [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        public FreshDamage FreshDmg { get; set; } = new FreshDamage();
+        public FreshDamage FreshDmg { get; private set; }
 
         [DataMember]
-        protected float lastProgressValue;
+        private float lastProgressValue;
 
         [DataMember]
         public float FreshDmgValue { get; set; }
@@ -32,26 +32,25 @@ namespace TextAdventure.Core.UI
         private void HealthProgressBar_ProgressChanged(object sender, EventArgs e)
         {
             var diff = progressValue - lastProgressValue;
+            float muhDiff;
 
-            if (diff == 0.0f)
-                return;
+            dmgDoubleAnimation?.Reset();
+
+            if (diff == 0.0f) return; // Shouldn't happen ever, but you never know.
 
             if (diff > 0.0f)
             {
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue + diff, 0.0f, 1.0f);
+                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
+                FreshDmgFillSize = (int)(FreshDmgValue * Width);
             }
             else if (diff < 0.0f)
             {
                 FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
+                FreshDmgFillSize = (int)(FreshDmgValue * Width);
             }
 
-            FreshDmgFillSize = (int)(FreshDmgValue * Width);
-
-            // Assign current value as last value checked.
             lastProgressValue = progressValue;
 
-            // Reset timer for doing the eased-out visual decrease.
-            startDropTimer.TimerAmount = howLongUntilStartDropTimerTrigger;
             startDropTimer.Restart();
         }
 
@@ -65,11 +64,9 @@ namespace TextAdventure.Core.UI
 
         public Timer startDropTimer;
 
-        protected TimeSpan howLongUntilStartDropTimerTrigger = TimeSpan.FromMilliseconds(250);
-
         private void createStartDropTimer()
         {
-            startDropTimer = new Timer(howLongUntilStartDropTimerTrigger) { IsPaused = true, Repeat = false };
+            startDropTimer = new Timer(TimeSpan.FromTicks(1)) { IsPaused = true, Repeat = false };
             startDropTimer.TimerElapsed += StartDropTimer_OnTimerElapsed;
         }
 
@@ -90,7 +87,7 @@ namespace TextAdventure.Core.UI
             dmgDoubleAnimation = new DoubleAnimation()
             {
                 Duration = decrementAnimDuration,
-                EasingFunction = new SadConsole.EasingFunctions.Linear() { Mode = EasingMode.InOut },
+                EasingFunction = new SadConsole.EasingFunctions.Linear() { Mode = EasingMode.Out },
             };
 
             if (FreshDmgValue >= 0.0f)
@@ -100,8 +97,8 @@ namespace TextAdventure.Core.UI
             }
             else if (FreshDmgValue <= 0.0f)
             {
-                dmgDoubleAnimation.StartingValue = FreshDmgValue;
-                dmgDoubleAnimation.EndingValue = 0.0d;
+                dmgDoubleAnimation.StartingValue = 0.0d;
+                dmgDoubleAnimation.EndingValue = FreshDmgValue;
             }
 
             dmgDoubleAnimation.Start();
@@ -112,14 +109,8 @@ namespace TextAdventure.Core.UI
             if (dmgDoubleAnimation == null || !dmgDoubleAnimation.IsStarted)
                 return;
 
-            if (dmgDoubleAnimation.IsFinished)
-            {
-                FreshDmgFillSize = 0;
-                return;
-            }
-
             FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
-            FreshDmgFillSize = (int)(controlSize * FreshDmgValue);
+            FreshDmgFillSize = (int)(controlSize * dmgDoubleAnimation.CurrentValue);
         }
 
         #endregion // -----------------------------------------------------------------------------"

@@ -8,22 +8,27 @@ using Console = SadConsole.Console;
 using Microsoft.Xna.Framework;
 using TextAdventure.Core.UI;
 using SadConsole.Controls;
+using SadConsole.Themes;
+using TextAdventure.Core.Console;
 
 namespace TextAdventure
 {
     public class TextGame : SadConsole.Game
     {
+        ControlsConsole console;
+        TestHealthConsole testHPConsole;
+
         HealthProgressBar HPBar;
         Label HPLabel;
 
         HealthBarTimelineEvent[] testEvents;
 
-        public TextGame() : base("", 80, 25, null)
+        public TextGame() : base("", 120, 25, null)
         {
             testEvents = new[] {
                 new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
-                new HealthBarTimelineEvent(0.25f, TimeSpan.FromMilliseconds(1500)),
-                new HealthBarTimelineEvent(0.75f, TimeSpan.FromSeconds(3)),
+                new HealthBarTimelineEvent(0.15f, TimeSpan.FromSeconds(1.75)),
+                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.5)),
             };
         }
 
@@ -34,7 +39,7 @@ namespace TextAdventure
 
             base.Initialize();
 
-            ControlsConsole console = new SadConsole.ControlsConsole(80, 3);
+            console = new SadConsole.ControlsConsole(Global.CurrentScreen.Width, 3);
 
             var consoleTheme = SadConsole.Themes.Library.Default.Clone();
             consoleTheme.ProgressBarTheme = new HealthProgressBarTheme();
@@ -47,8 +52,23 @@ namespace TextAdventure
             });
             console.Add(HPLabel = new Label(80) { Position = new Point(0, 1) });
 
+            //changeThemeTimer = new Timer(TimeSpan.FromSeconds(2)) { Repeat = false };
+            //changeThemeTimer.TimerElapsed += ChangeThemeTimer_TimerElapsed;
+            //console.Components.Add(changeThemeTimer);
+
             //Global.CurrentScreen = console;
+            SadConsole.Global.CurrentScreen = new SadConsole.ContainerConsole() {  };
+
             SadConsole.Global.CurrentScreen.Children.Add(console);
+
+            testHPConsole = new TestHealthConsole(80, 20) { Position = new Point(0, 3) };
+            testHPConsole.ClickAny += HPBar.TestHPConsole_ClickAny;
+            SadConsole.Global.CurrentScreen.Children.Add(testHPConsole);
+        }
+
+        private void Program_WindowResized(object sender, EventArgs e)
+        {
+            SadConsole.Global.CurrentScreen.Resize(Global.WindowWidth / SadConsole.Global.CurrentScreen.Font.Size.X, Global.WindowHeight / SadConsole.Global.CurrentScreen.Font.Size.Y, true);
         }
 
         protected override void Update(GameTime gameTime)

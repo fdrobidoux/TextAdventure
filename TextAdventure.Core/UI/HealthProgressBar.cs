@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SadConsole;
 using SadConsole.Controls;
+using TextAdventure.Core.Mechanics;
 
 namespace TextAdventure.Core.UI
 {
@@ -28,6 +29,7 @@ namespace TextAdventure.Core.UI
 
         private void beforeConstruct()
         {
+            this.FreshDmg = new FreshDamage(this);
             this.Progress = 1.0f;
             this.bindFreshDmgOnProgressChanged();
             this.createStartDropTimer();
@@ -61,6 +63,11 @@ namespace TextAdventure.Core.UI
             base.OnThemeChanged();
         }
 
-#endregion
+        public void TestHPConsole_ClickAny(object sender, float e)
+        {
+            this.Progress = MathHelper.Clamp(this.Progress + e, 0.0f, 1.0f);
+        }
+
+        #endregion
     }
 }

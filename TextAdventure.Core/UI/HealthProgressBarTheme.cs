@@ -24,29 +24,23 @@ namespace TextAdventure.Core.UI
 
             base.UpdateAndDraw(control, time);
 
-            if ((control is HealthProgressBar hpBar) && initialDirtiness && !prevVals.Equals(hpBar))
+            if ((control is HealthProgressBar hpBar))
+                this.UpdateAndDraw_HealthProgressBar(hpBar, time, initialDirtiness);
+        }
+
+        public void UpdateAndDraw_HealthProgressBar(HealthProgressBar hpBar, TimeSpan time, bool InitialDirtiness)
+        {
+            if (!prevVals.Equals(hpBar))
             {
-                Rectangle fillRect;
-
-                if (hpBar.FreshDmgValue >= 0.0f)
-                {
-                    fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
-                }
-                else if (hpBar.FreshDmgValue <= 0.0f)
-                {
-                    fillRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
-                }
-                else
-                {
-                    fillRect = lastRect;
-                }
-
                 prevVals = new PreviousBarValues(hpBar);
-                lastRect = fillRect;
+
+                lastRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
+
+                hpBar.IsDirty = true;
             }
 
-            control.IsDirty = true;
-            control.Surface.Fill(lastRect, Color.IndianRed, Color.White, 178, 0);
+            if (InitialDirtiness || hpBar.IsDirty)
+                hpBar.Surface.Fill(lastRect, FreshDamage.Foreground, FreshDamage.Background, 178, 0);
         }
 
         public override void Attached(ControlBase control)
@@ -63,7 +57,7 @@ namespace TextAdventure.Core.UI
         {
             base.RefreshTheme(themeColors);
 
-            FreshDamage = new Cell(themeColors.Black, themeColors.White);
+            FreshDamage = new Cell(themeColors.RedDark, themeColors.White);
         }
 
         private struct PreviousBarValues: IEquatable<HealthProgressBar>
@@ -81,6 +75,7 @@ namespace TextAdventure.Core.UI
 
             public bool Equals(HealthProgressBar other) 
                 => (other.fillSize == this.fillSize) && (other.FreshDmgFillSize == this.freshDmgFillSize);
+
         }
     }
 }

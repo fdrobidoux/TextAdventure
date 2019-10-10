@@ -1,4 +1,5 @@
 ﻿using System;
+using SadConsole;
 
 namespace TextAdventure
 {
@@ -7,8 +8,9 @@ namespace TextAdventure
         [STAThread]
         static void Main()
         {
-            SadConsole.Settings.AllowWindowResize = false;
+            SadConsole.Settings.AllowWindowResize = true;
             SadConsole.Settings.UnlimitedFPS = false;
+            SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.None;
 
             using (var game = new TextGame())
                 game.Run();
