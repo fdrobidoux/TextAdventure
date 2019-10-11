@@ -13,18 +13,20 @@ namespace TextAdventure.Core.Console
         List<SadConsole.Controls.Button> IncrementButtons;
         List<SadConsole.Controls.Button> MinusButtons;
 
+        ButtonTheme buttonTheme;
+
         public TestHealthConsole(int width, int height) : base(width, height)
         {
             IncrementButtons = new List<Button>() {
-                new Button(7, 3) { Text = "+1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusOnePercent" },
-                new Button(8, 3) { Text = "+10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTenPercent" },
-                new Button(8, 3) { Text = "+25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTwentyFivePercent" }
+                new Button(7, 3) { Text = "+1%", Name = "Btn_PlusOnePercent" },
+                new Button(8, 3) { Text = "+10%", Name = "Btn_PlusTenPercent" },
+                new Button(8, 3) { Text = "+25%", Name = "Btn_PlusTwentyFivePercent" }
             };
 
             MinusButtons = new List<Button>() {
-                new Button(7, 3) { Text = "-1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusOnePercent" },
-                new Button(8, 3) { Text = "-10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTenPercent" },
-                new Button(8, 3) { Text = "-25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTwentyFivePercent" }
+                new Button(7, 3) { Text = "-1%", Name = "Btn_MinusOnePercent" },
+                new Button(8, 3) { Text = "-10%", Name = "Btn_MinusTenPercent" },
+                new Button(8, 3) { Text = "-25%", Name = "Btn_MinusTwentyFivePercent" }
             };
 
             Button currentButton;
@@ -32,24 +34,33 @@ namespace TextAdventure.Core.Console
             List<Button>[] lsOfBtnListe = new[] { IncrementButtons, MinusButtons };
             int biggestHeightForRow = 0;
             int lastLineBiggestHeight = 0;
+            List<Button> btnList;
+
+            buttonTheme = new ButtonLinesTheme();
 
             for (var i = 0; i < lsOfBtnListe.Length; i++)
             {
-                List<Button> btnList = lsOfBtnListe[i];
+                btnList = lsOfBtnListe[i];
 
                 for (var j = 0; j < btnList.Count; j++)
                 {
                     currentButton = btnList[j];
 
-                    currentButton.Theme = new ButtonLinesTheme();
-
+                    currentButton.Theme = buttonTheme;
+                    currentButton.TextAlignment = HorizontalAlignment.Center;
+                    
+                    // Somehow, this works. I have no idea how, my hands wrote this, ask them !
                     currentButton.Position = new Point((currentButton.Width * j) + j, lastLineBiggestHeight * i);
 
+                    // I don't care about good UX tbh, so align rows based on biggest height in last row.
                     biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height);
 
-                    this.Add(currentButton);
+                    // Bind click event.
                     currentButton.Click += CurrentButton_Click;
+
+                    this.Add(currentButton);
                 }
+
                 lastLineBiggestHeight = biggestHeightForRow;
             }
         }

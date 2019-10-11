@@ -19,7 +19,8 @@ namespace TextAdventure
         TestHealthConsole testHPConsole;
 
         HealthProgressBar HPBar;
-        Label HPLabel;
+        Label DmgLabel;
+        Label HealLabel;
 
         HealthBarTimelineEvent[] testEvents;
 
@@ -45,17 +46,21 @@ namespace TextAdventure
             {
                 Position = Point.Zero
             });
-            console.Add(HPLabel = new Label(80)
+            console.Add(DmgLabel = new Label(80)
             {
                 Position = new Point(0, 1)
             });
-
-            SadConsole.Global.CurrentScreen = new SadConsole.ContainerConsole() {  };
+            console.Add(HealLabel = new Label(80)
+            {
+                Position = new Point(0, 2)
+            });
 
             SadConsole.Global.CurrentScreen.Children.Add(console);
 
+            // Collection of buttons for testing.
             testHPConsole = new TestHealthConsole(80, 20) { Position = new Point(0, 3) };
             testHPConsole.ClickAny += HPBar.TestHPConsole_ClickAny;
+
             SadConsole.Global.CurrentScreen.Children.Add(testHPConsole);
         }
 
@@ -63,6 +68,8 @@ namespace TextAdventure
         {
             SadConsole.Global.CurrentScreen.Resize(Global.WindowWidth / SadConsole.Global.CurrentScreen.Font.Size.X, Global.WindowHeight / SadConsole.Global.CurrentScreen.Font.Size.Y, true);
         }
+
+        bool tempDone;
 
         protected override void Update(GameTime gameTime)
         {
@@ -75,7 +82,14 @@ namespace TextAdventure
                 }
             }
 
-            HPLabel.DisplayText = $"fDFS={HPBar.FreshDmgFillSize};fDV={HPBar.FreshDmgValue};";
+            if (!tempDone && gameTime.TotalGameTime.Seconds > 3)
+            {
+                tempDone = true;
+                //console.
+            }
+
+            DmgLabel.DisplayText = $"fDFS={HPBar.freshDmgFillSize};fDV={HPBar.FreshDmgValue};";
+            DmgLabel.DisplayText = $"fDFS={HPBar.freshDmgFillSize};fDV={HPBar.FreshDmgValue};";
 
             base.Update(gameTime);
         }

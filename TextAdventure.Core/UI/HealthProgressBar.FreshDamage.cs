@@ -5,51 +5,40 @@ using Microsoft.Xna.Framework;
 using SadConsole;
 using SadConsole.EasingFunctions;
 using TextAdventure.Core.Mechanics;
-using XNAMathHelper = Microsoft.Xna.Framework.MathHelper;
+#if NETSTANDARD2_0
+using MathHelper = SadConsole.MathHelper;
+#else
+using MathHelper = Microsoft.Xna.Framework.MathHelper;
+#endif
 
 namespace TextAdventure.Core.UI
 {
     [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        public FreshDamage FreshDmg { get; private set; }
+        private float lastProgressDecrement;
+        public int freshDmgFillSize;
 
-        [DataMember]
-        private float lastProgressValue;
-
-        [DataMember]
         public float FreshDmgValue { get; set; }
-
-        [DataMember]
-        public int FreshDmgFillSize { get; set; }
 
         private void bindFreshDmgOnProgressChanged()
         {
-            lastProgressValue = progressValue;
-            ProgressChanged += HealthProgressBar_ProgressChanged;
+            lastProgressDecrement = progressValue;
+            ProgressChanged += FreshDamage_ProgressChanged;
         }
 
-        private void HealthProgressBar_ProgressChanged(object sender, EventArgs e)
+        private void FreshDamage_ProgressChanged(object sender, EventArgs e)
         {
-            var diff = progressValue - lastProgressValue;
-            float muhDiff;
+            var diff = progressValue - lastProgressDecrement;
 
             dmgDoubleAnimation?.Reset();
 
             if (diff == 0.0f) return; // Shouldn't happen ever, but you never know.
 
-            if (diff > 0.0f)
-            {
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
-                FreshDmgFillSize = (int)(FreshDmgValue * Width);
-            }
-            else if (diff < 0.0f)
-            {
-                FreshDmgValue = XNAMathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
-                FreshDmgFillSize = (int)(FreshDmgValue * Width);
-            }
+            FreshDmgValue = MathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
+            freshDmgFillSize = (int)(FreshDmgValue * Width);
 
-            lastProgressValue = progressValue;
+            lastProgressDecrement = progressValue;
 
             startDropTimer.Restart();
         }
@@ -60,7 +49,7 @@ namespace TextAdventure.Core.UI
             updateFreshDmgDblAnimation();
         }
 
-        #region "TIMER - Start dropping ----------------------------------------------------------"
+#region "TIMER - Start dropping ----------------------------------------------------------"
 
         public Timer startDropTimer;
 
@@ -75,9 +64,9 @@ namespace TextAdventure.Core.UI
             startFreshDmgDblAnimation();
         }
 
-        #endregion // -----------------------------------------------------------------------------"
+#endregion // -----------------------------------------------------------------------------"
 
-        #region "Ease out dropping ----------------------------------------------------------------"
+#region "Ease out dropping ----------------------------------------------------------------"
 
         public DoubleAnimation dmgDoubleAnimation;
         public TimeSpan decrementAnimDuration = TimeSpan.FromSeconds(2);
@@ -110,9 +99,9 @@ namespace TextAdventure.Core.UI
                 return;
 
             FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
-            FreshDmgFillSize = (int)(controlSize * dmgDoubleAnimation.CurrentValue);
+            freshDmgFillSize = (int)(controlSize * FreshDmgValue);
         }
 
-        #endregion // -----------------------------------------------------------------------------"
+#endregion // -----------------------------------------------------------------------------"
     }
 }

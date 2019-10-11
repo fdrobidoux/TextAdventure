@@ -4,17 +4,12 @@ using System.Runtime.Serialization;
 using SadConsole;
 using SadConsole.Controls;
 using TextAdventure.Core.Mechanics;
+using TextAdventure.Core.Themes;
 
 namespace TextAdventure.Core.UI
 {
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        /// <summary>
-        /// Text value within the health progress bar.
-        /// </summary>
-        [DataMember]
-        protected string textValue;
-
         public HealthProgressBar(int width, int height, HorizontalAlignment horizontalAlignment) : base(width, height, horizontalAlignment)
         {
             this.beforeConstruct();
@@ -29,9 +24,11 @@ namespace TextAdventure.Core.UI
 
         private void beforeConstruct()
         {
-            this.FreshDmg = new FreshDamage(this);
+            this.Theme = new HealthProgressBarTheme();
+            //this.FreshDmg = new FreshDamage(this);
             this.Progress = 1.0f;
             this.bindFreshDmgOnProgressChanged();
+            this.bindHealingOnProgressChanged();
             this.createStartDropTimer();
         }
 

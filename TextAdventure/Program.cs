@@ -10,7 +10,7 @@ namespace TextAdventure
         {
             SadConsole.Settings.AllowWindowResize = true;
             SadConsole.Settings.UnlimitedFPS = false;
-            SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.None;
+            SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.Fit;
 
             using (var game = new TextGame())
                 game.Run();
