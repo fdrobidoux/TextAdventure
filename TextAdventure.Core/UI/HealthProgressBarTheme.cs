@@ -40,7 +40,7 @@ namespace TextAdventure.Core.UI
             }
 
             if (InitialDirtiness || hpBar.IsDirty)
-                hpBar.Surface.Fill(lastRect, FreshDamage.Foreground, FreshDamage.Background, 178, 0);
+                hpBar.Surface.Fill(lastRect, FreshDamage.Foreground, FreshDamage.Background, 2, 0);
         }
 
         public override void Attached(ControlBase control)
