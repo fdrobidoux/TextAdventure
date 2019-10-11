@@ -4,6 +4,7 @@ using System.Linq;
 using SadConsole;
 using SadConsole.Controls;
 using Microsoft.Xna.Framework;
+using SadConsole.Themes;
 
 namespace TextAdventure.Core.Console
 {
@@ -15,21 +16,22 @@ namespace TextAdventure.Core.Console
         public TestHealthConsole(int width, int height) : base(width, height)
         {
             IncrementButtons = new List<Button>() {
-                new Button(5, 3) { Text = "+1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusOnePercent" },
-                new Button(6, 3) { Text = "+10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTenPercent" },
-                new Button(6, 3) { Text = "+25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTwentyFivePercent" }
+                new Button(7, 3) { Text = "+1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusOnePercent" },
+                new Button(8, 3) { Text = "+10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTenPercent" },
+                new Button(8, 3) { Text = "+25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_PlusTwentyFivePercent" }
             };
 
             MinusButtons = new List<Button>() {
-                new Button(5, 3) { Text = "-1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusOnePercent" },
-                new Button(6, 3) { Text = "-10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTenPercent" },
-                new Button(6, 3) { Text = "-25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTwentyFivePercent" }
+                new Button(7, 3) { Text = "-1%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusOnePercent" },
+                new Button(8, 3) { Text = "-10%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTenPercent" },
+                new Button(8, 3) { Text = "-25%", TextAlignment = HorizontalAlignment.Center, Name = "Btn_MinusTwentyFivePercent" }
             };
 
             Button currentButton;
             Point daPoint = Point.Zero;
             List<Button>[] lsOfBtnListe = new[] { IncrementButtons, MinusButtons };
             int biggestHeightForRow = 0;
+            int lastLineBiggestHeight = 0;
 
             for (var i = 0; i < lsOfBtnListe.Length; i++)
             {
@@ -39,14 +41,16 @@ namespace TextAdventure.Core.Console
                 {
                     currentButton = btnList[j];
 
-                    currentButton.Position = new Point((currentButton.Width) * j, biggestHeightForRow * i);
+                    currentButton.Theme = new ButtonLinesTheme();
 
-                    biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height + currentButton.Position.Y);
+                    currentButton.Position = new Point((currentButton.Width * j) + j, lastLineBiggestHeight * i);
+
+                    biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height);
 
                     this.Add(currentButton);
                     currentButton.Click += CurrentButton_Click;
                 }
-
+                lastLineBiggestHeight = biggestHeightForRow;
             }
         }
 
@@ -80,7 +84,6 @@ namespace TextAdventure.Core.Console
                     break;
                 default:
                     throw new NotImplementedException("Btn n'est pas géré.");
-                    break;
             }
 
             ClickAny?.Invoke(btn, valeur);

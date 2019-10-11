@@ -28,7 +28,7 @@ namespace TextAdventure
             testEvents = new[] {
                 new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
                 new HealthBarTimelineEvent(0.15f, TimeSpan.FromSeconds(1.75)),
-                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.5)),
+                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.25)),
             };
         }
 
@@ -41,22 +41,15 @@ namespace TextAdventure
 
             console = new SadConsole.ControlsConsole(Global.CurrentScreen.Width, 3);
 
-            var consoleTheme = SadConsole.Themes.Library.Default.Clone();
-            consoleTheme.ProgressBarTheme = new HealthProgressBarTheme();
-            console.Theme = consoleTheme;
-
             console.Add(HPBar = new HealthProgressBar(console.Width, 1, HorizontalAlignment.Left)
             {
-                Position = Point.Zero,
-                Theme = new HealthProgressBarTheme()
+                Position = Point.Zero
             });
-            console.Add(HPLabel = new Label(80) { Position = new Point(0, 1) });
+            console.Add(HPLabel = new Label(80)
+            {
+                Position = new Point(0, 1)
+            });
 
-            //changeThemeTimer = new Timer(TimeSpan.FromSeconds(2)) { Repeat = false };
-            //changeThemeTimer.TimerElapsed += ChangeThemeTimer_TimerElapsed;
-            //console.Components.Add(changeThemeTimer);
-
-            //Global.CurrentScreen = console;
             SadConsole.Global.CurrentScreen = new SadConsole.ContainerConsole() {  };
 
             SadConsole.Global.CurrentScreen.Children.Add(console);
