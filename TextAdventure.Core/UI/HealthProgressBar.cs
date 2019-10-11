@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using SadConsole;
 using SadConsole.Controls;
-using TextAdventure.Core.Mechanics;
 using TextAdventure.Core.Themes;
 
 namespace TextAdventure.Core.UI

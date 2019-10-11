@@ -4,7 +4,6 @@ using System.Runtime.Serialization;
 using Microsoft.Xna.Framework;
 using SadConsole;
 using SadConsole.EasingFunctions;
-using TextAdventure.Core.Mechanics;
 #if NETSTANDARD2_0
 using MathHelper = SadConsole.MathHelper;
 #else

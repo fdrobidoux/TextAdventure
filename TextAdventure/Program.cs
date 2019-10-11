@@ -1,5 +1,6 @@
 ﻿using System;
 using SadConsole;
+using Microsoft.Xna.Framework;
 
 namespace TextAdventure
 {
@@ -10,7 +11,7 @@ namespace TextAdventure
         {
             SadConsole.Settings.AllowWindowResize = true;
             SadConsole.Settings.UnlimitedFPS = false;
-            SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.Fit;
+            SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.Scale;
 
             using (var game = new TextGame())
                 game.Run();

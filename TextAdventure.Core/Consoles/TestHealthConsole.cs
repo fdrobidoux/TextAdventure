@@ -18,15 +18,15 @@ namespace TextAdventure.Core.Console
         public TestHealthConsole(int width, int height) : base(width, height)
         {
             IncrementButtons = new List<Button>() {
-                new Button(7, 3) { Text = "+1%", Name = "Btn_PlusOnePercent" },
-                new Button(8, 3) { Text = "+10%", Name = "Btn_PlusTenPercent" },
-                new Button(8, 3) { Text = "+25%", Name = "Btn_PlusTwentyFivePercent" }
+                new Button(7, 3) { Text = "+1%", Name = "PlusOnePercent" },
+                new Button(8, 3) { Text = "+10%", Name = "PlusTenPercent" },
+                new Button(8, 3) { Text = "+25%", Name = "PlusTwentyFivePercent" }
             };
 
             MinusButtons = new List<Button>() {
-                new Button(7, 3) { Text = "-1%", Name = "Btn_MinusOnePercent" },
-                new Button(8, 3) { Text = "-10%", Name = "Btn_MinusTenPercent" },
-                new Button(8, 3) { Text = "-25%", Name = "Btn_MinusTwentyFivePercent" }
+                new Button(7, 3) { Text = "-1%", Name = "MinusOnePercent" },
+                new Button(8, 3) { Text = "-10%", Name = "MinusTenPercent" },
+                new Button(8, 3) { Text = "-25%", Name = "MinusTwentyFivePercent" }
             };
 
             Button currentButton;
@@ -75,22 +75,22 @@ namespace TextAdventure.Core.Console
 
             switch (btn.Name)
             {
-                case "Btn_PlusOnePercent":
+                case "PlusOnePercent":
                     valeur = 0.01f;
                     break;
-                case "Btn_PlusTenPercent":
+                case "PlusTenPercent":
                     valeur = 0.1f;
                     break;
-                case "Btn_PlusTwentyFivePercent":
+                case "PlusTwentyFivePercent":
                     valeur = 0.25f;
                     break;
-                case "Btn_MinusOnePercent":
+                case "MinusOnePercent":
                     valeur = -0.01f;
                     break;
-                case "Btn_MinusTenPercent":
+                case "MinusTenPercent":
                     valeur = -0.1f;
                     break;
-                case "Btn_MinusTwentyFivePercent":
+                case "MinusTwentyFivePercent":
                     valeur = -0.25f;
                     break;
                 default:

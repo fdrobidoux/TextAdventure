@@ -24,7 +24,7 @@ namespace TextAdventure
 
         HealthBarTimelineEvent[] testEvents;
 
-        public TextGame() : base("", 80, 25, null)
+        public TextGame() : base("", 200, 40, null)
         {
             testEvents = new[] {
                 new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
@@ -85,7 +85,6 @@ namespace TextAdventure
             if (!tempDone && gameTime.TotalGameTime.Seconds > 3)
             {
                 tempDone = true;
-                //console.
             }
 
             DmgLabel.DisplayText = $"fDFS={HPBar.freshDmgFillSize};fDV={HPBar.FreshDmgValue};";

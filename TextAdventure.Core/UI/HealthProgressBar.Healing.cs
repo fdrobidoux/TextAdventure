@@ -43,12 +43,13 @@ namespace TextAdventure.Core.UI
 
         private readonly Color STARTING_COLOR = Color.Green;
 
+        [Obsolete]
         private void startHealingDblAnimation()
         {
             fadeOutHealingDblAnimation = new DoubleAnimation()
             {
                 Duration = fadeOutHealingDuration,
-                EasingFunction = new SadConsole.EasingFunctions.Circle() { Mode = SadConsole.EasingFunctions.EasingMode.Out },
+                EasingFunction = new SadConsole.EasingFunctions.Circle() { Mode = EasingMode.Out },
                 StartingValue = 1.0,
                 EndingValue = 0.0
             };
@@ -58,6 +59,7 @@ namespace TextAdventure.Core.UI
             fadeOutHealingDblAnimation.Start();
         }
 
+        [Obsolete]
         private void updateHealingDblAnimation()
         {
             if (fadeOutHealingDblAnimation == null || !fadeOutHealingDblAnimation.IsStarted)
