@@ -27,7 +27,6 @@ namespace TextAdventure.Core.UI
             //this.FreshDmg = new FreshDamage(this);
             this.Progress = 1.0f;
             this.bindFreshDmgOnProgressChanged();
-            this.bindHealingOnProgressChanged();
             this.createStartDropTimer();
         }
 

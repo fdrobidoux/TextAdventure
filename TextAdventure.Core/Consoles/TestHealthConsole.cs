@@ -5,18 +5,31 @@ using SadConsole;
 using SadConsole.Controls;
 using Microsoft.Xna.Framework;
 using SadConsole.Themes;
+using TextAdventure.Core.UI;
 
 namespace TextAdventure.Core.Console
 {
     public class TestHealthConsole : ControlsConsole
     {
+        private HealthProgressBar hpBar;
+        private HealthBarTimelineEvent[] testEvents;
+        
         List<SadConsole.Controls.Button> IncrementButtons;
         List<SadConsole.Controls.Button> MinusButtons;
 
         ButtonTheme buttonTheme;
 
-        public TestHealthConsole(int width, int height) : base(width, height)
+        public TestHealthConsole(int width, int height, HealthProgressBar hpBar) : base(width, height)
         {
+            this.hpBar = hpBar;
+
+            // Just for testing.
+            testEvents = new[] {
+                new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
+                new HealthBarTimelineEvent(0.15f, TimeSpan.FromSeconds(1.75)),
+                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.25)),
+            };
+
             IncrementButtons = new List<Button>() {
                 new Button(7, 3) { Text = "+1%", Name = "PlusOnePercent" },
                 new Button(8, 3) { Text = "+10%", Name = "PlusTenPercent" },
@@ -65,6 +78,18 @@ namespace TextAdventure.Core.Console
             }
         }
 
+        public void Update(GameTime gameTime)
+        {
+            foreach (HealthBarTimelineEvent _event in testEvents)
+            {
+                if (!_event.isDone && gameTime.TotalGameTime >= _event.when)
+                {
+                    _event.Done();
+                    hpBar.Progress = _event.newValue;
+                }
+            }
+        }
+
         public event EventHandler<float> ClickAny;
 
         private void CurrentButton_Click(object sender, EventArgs e)
@@ -98,6 +123,23 @@ namespace TextAdventure.Core.Console
             }
 
             ClickAny?.Invoke(btn, valeur);
+        }
+    }
+    internal class HealthBarTimelineEvent
+    {
+        public float newValue;
+        public TimeSpan when;
+        public bool isDone = false;
+
+        public HealthBarTimelineEvent(float @newValue, TimeSpan @when)
+        {
+            this.newValue = @newValue;
+            this.when = @when;
+        }
+
+        public void Done()
+        {
+            this.isDone = true;
         }
     }
 }

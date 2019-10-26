@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using TextAdventure.Core.Concepts;
 using SadConsole;
 using SadConsole.Input;
 using Console = SadConsole.Console;
@@ -20,17 +19,10 @@ namespace TextAdventure
 
         HealthProgressBar HPBar;
         Label DmgLabel;
-        Label HealLabel;
 
-        HealthBarTimelineEvent[] testEvents;
-
-        public TextGame() : base("", 100, 40, null)
+        public TextGame() : base("", 100, 50, null)
         {
-            testEvents = new[] {
-                new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
-                new HealthBarTimelineEvent(0.15f, TimeSpan.FromSeconds(1.75)),
-                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.25)),
-            };
+            
         }
 
         protected override void Initialize()
@@ -50,16 +42,12 @@ namespace TextAdventure
             {
                 Position = new Point(0, 1)
             });
-            console.Add(HealLabel = new Label(80)
-            {
-                Position = new Point(0, 2)
-            });
 
             SadConsole.Global.CurrentScreen.Children.Add(console);
 
             // Collection of buttons for testing.
-            testHPConsole = new TestHealthConsole(80, 20) { Position = new Point(0, 3) };
-            testHPConsole.ClickAny += HPBar.TestHPConsole_ClickAny;
+            //testHPConsole = new TestHealthConsole(80, 20, HPBar) { Position = new Point(0, 3) };
+            //testHPConsole.ClickAny += HPBar.TestHPConsole_ClickAny;
 
             SadConsole.Global.CurrentScreen.Children.Add(testHPConsole);
         }
@@ -73,14 +61,7 @@ namespace TextAdventure
 
         protected override void Update(GameTime gameTime)
         {
-            foreach (HealthBarTimelineEvent _event in testEvents)
-            {
-                if (!_event.isDone && gameTime.TotalGameTime >= _event.when)
-                {
-                    _event.isDone = true;
-                    HPBar.Progress = _event.newValue;
-                }
-            }
+            testHPConsole.Update(gameTime);
 
             if (!tempDone && gameTime.TotalGameTime.Seconds > 3)
             {
@@ -96,19 +77,6 @@ namespace TextAdventure
         protected override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
-        }
-    }
-
-    internal class HealthBarTimelineEvent
-    {
-        public float newValue;
-        public TimeSpan when;
-        public bool isDone = false;
-
-        public HealthBarTimelineEvent(float @newValue, TimeSpan @when)
-        {
-            this.newValue = @newValue;
-            this.when = @when;
         }
     }
 }
