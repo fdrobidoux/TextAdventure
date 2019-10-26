@@ -24,7 +24,7 @@ namespace TextAdventure
 
         HealthBarTimelineEvent[] testEvents;
 
-        public TextGame() : base("", 200, 40, null)
+        public TextGame() : base("", 100, 40, null)
         {
             testEvents = new[] {
                 new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
