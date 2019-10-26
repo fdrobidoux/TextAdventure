@@ -9,16 +9,13 @@ using TextAdventure.Core.UI;
 using SadConsole.Controls;
 using SadConsole.Themes;
 using TextAdventure.Core.Console;
+using TextAdventure.Core.Consoles;
 
 namespace TextAdventure
 {
     public class TextGame : SadConsole.Game
     {
-        ControlsConsole console;
-        TestHealthConsole testHPConsole;
-
-        HealthProgressBar HPBar;
-        Label DmgLabel;
+        HUDConsole MyHUDConsole;
 
         public TextGame() : base("", 100, 50, null)
         {
@@ -32,45 +29,20 @@ namespace TextAdventure
 
             base.Initialize();
 
-            console = new SadConsole.ControlsConsole(Global.CurrentScreen.Width, 3);
-
-            console.Add(HPBar = new HealthProgressBar(console.Width, 1, HorizontalAlignment.Left)
-            {
-                Position = Point.Zero
-            });
-            console.Add(DmgLabel = new Label(80)
-            {
-                Position = new Point(0, 1)
-            });
-
-            SadConsole.Global.CurrentScreen.Children.Add(console);
+            MyHUDConsole = new HUDConsole(Global.CurrentScreen.Width, 4);
 
             // Collection of buttons for testing.
             //testHPConsole = new TestHealthConsole(80, 20, HPBar) { Position = new Point(0, 3) };
-            //testHPConsole.ClickAny += HPBar.TestHPConsole_ClickAny;
-
-            SadConsole.Global.CurrentScreen.Children.Add(testHPConsole);
         }
 
+        [Obsolete]
         private void Program_WindowResized(object sender, EventArgs e)
         {
             SadConsole.Global.CurrentScreen.Resize(Global.WindowWidth / SadConsole.Global.CurrentScreen.Font.Size.X, Global.WindowHeight / SadConsole.Global.CurrentScreen.Font.Size.Y, true);
         }
 
-        bool tempDone;
-
         protected override void Update(GameTime gameTime)
         {
-            testHPConsole.Update(gameTime);
-
-            if (!tempDone && gameTime.TotalGameTime.Seconds > 3)
-            {
-                tempDone = true;
-            }
-
-            DmgLabel.DisplayText = $"fDFS={HPBar.freshDmgFillSize};fDV={HPBar.FreshDmgValue};";
-            DmgLabel.DisplayText = $"fDFS={HPBar.freshDmgFillSize};fDV={HPBar.FreshDmgValue};";
-
             base.Update(gameTime);
         }
 

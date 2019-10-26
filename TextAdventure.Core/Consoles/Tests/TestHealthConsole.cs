@@ -11,18 +11,17 @@ namespace TextAdventure.Core.Console
 {
     public class TestHealthConsole : ControlsConsole
     {
-        private HealthProgressBar hpBar;
-        private HealthBarTimelineEvent[] testEvents;
+        HealthProgressBar hpBar;
+        HealthBarTimelineEvent[] testEvents;
         
         List<SadConsole.Controls.Button> IncrementButtons;
         List<SadConsole.Controls.Button> MinusButtons;
 
         ButtonTheme buttonTheme;
+        Label DmgLabel;
 
-        public TestHealthConsole(int width, int height, HealthProgressBar hpBar) : base(width, height)
+        public TestHealthConsole(int width, int height) : base(width, height)
         {
-            this.hpBar = hpBar;
-
             // Just for testing.
             testEvents = new[] {
                 new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
@@ -48,6 +47,17 @@ namespace TextAdventure.Core.Console
             int biggestHeightForRow = 0;
             int lastLineBiggestHeight = 0;
             List<Button> btnList;
+            
+            this.Add(DmgLabel = new Label(80)
+            {
+                Position = new Point(0, 1)
+            });
+            this.Add(hpBar = new HealthProgressBar(this.Width, 1, HorizontalAlignment.Left)
+            {
+                Position = Point.Zero
+            });
+            
+            ClickAny += hpBar.TestHPConsole_ClickAny;
 
             buttonTheme = new ButtonLinesTheme();
 
@@ -88,6 +98,8 @@ namespace TextAdventure.Core.Console
                     hpBar.Progress = _event.newValue;
                 }
             }
+            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
         }
 
         public event EventHandler<float> ClickAny;
