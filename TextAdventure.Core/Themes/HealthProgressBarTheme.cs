@@ -59,7 +59,7 @@ namespace TextAdventure.Core.Themes
         {
             base.RefreshTheme(themeColors);
 
-            FreshDamage = new Cell(themeColors.RedDark, themeColors.Red);
+            FreshDamage = themeColors.Appearance_ControlDisabled;
         }
 
         private struct PreviousStateEncapsulator: IEquatable<HealthProgressBar>

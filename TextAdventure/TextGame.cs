@@ -31,6 +31,8 @@ namespace TextAdventure
 
             MyHUDConsole = new HUDConsole(Global.CurrentScreen.Width, 4);
 
+            SadConsole.Global.CurrentScreen.Children.Add(MyHUDConsole);
+
             // Collection of buttons for testing.
             //testHPConsole = new TestHealthConsole(80, 20, HPBar) { Position = new Point(0, 3) };
         }
