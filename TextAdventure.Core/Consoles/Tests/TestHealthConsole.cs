@@ -20,7 +20,7 @@ namespace TextAdventure.Core.Console
         ButtonTheme buttonTheme;
         Label DmgLabel;
 
-        public TestHealthConsole(int width, int height) : base(width, height)
+        public TestHealthConsole(int width, int height, HealthProgressBar hpBar, string testerName = "Bar Tester") : base(width, height)
         {
             // Just for testing.
             testEvents = new[] {
@@ -41,39 +41,37 @@ namespace TextAdventure.Core.Console
                 new Button(8, 3) { Text = "-25%", Name = "MinusTwentyFivePercent" }
             };
 
-            Button currentButton;
-            Point daPoint = Point.Zero;
             List<Button>[] lsOfBtnListe = new[] { IncrementButtons, MinusButtons };
+            List<Button> currentBtnList;
+            Button currentButton;
+
+            int baseTopPadding = 2;
             int biggestHeightForRow = 0;
             int lastLineBiggestHeight = 0;
-            List<Button> btnList;
             
-            this.Add(DmgLabel = new Label(80)
+            Add(DmgLabel = new Label(80)
             {
-                Position = new Point(0, 1)
+                Position = new Point(0, 0),
             });
-            this.Add(hpBar = new HealthProgressBar(this.Width, 1, HorizontalAlignment.Left)
-            {
-                Position = Point.Zero
-            });
-            
+
+            this.hpBar = hpBar;
             ClickAny += hpBar.TestHPConsole_ClickAny;
 
             buttonTheme = new ButtonLinesTheme();
 
             for (var i = 0; i < lsOfBtnListe.Length; i++)
             {
-                btnList = lsOfBtnListe[i];
+                currentBtnList = lsOfBtnListe[i];
 
-                for (var j = 0; j < btnList.Count; j++)
+                for (var j = 0; j < currentBtnList.Count; j++)
                 {
-                    currentButton = btnList[j];
+                    currentButton = currentBtnList[j];
 
                     currentButton.Theme = buttonTheme;
                     currentButton.TextAlignment = HorizontalAlignment.Center;
                     
                     // Somehow, this works. I have no idea how, my hands wrote this, ask them !
-                    currentButton.Position = new Point((currentButton.Width * j) + j, lastLineBiggestHeight * i);
+                    currentButton.Position = new Point(x: (currentButton.Width * j) + j, y: lastLineBiggestHeight * i + baseTopPadding);
 
                     // I don't care about good UX tbh, so align rows based on biggest height in last row.
                     biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height);
@@ -81,7 +79,7 @@ namespace TextAdventure.Core.Console
                     // Bind click event.
                     currentButton.Click += CurrentButton_Click;
 
-                    this.Add(currentButton);
+                    Add(currentButton);
                 }
 
                 lastLineBiggestHeight = biggestHeightForRow;
@@ -98,8 +96,10 @@ namespace TextAdventure.Core.Console
                     hpBar.Progress = _event.newValue;
                 }
             }
+            var currentDisplay = DmgLabel;
             DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
-            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+            DmgLabel.IsDirty = true;
+            
         }
 
         public event EventHandler<float> ClickAny;

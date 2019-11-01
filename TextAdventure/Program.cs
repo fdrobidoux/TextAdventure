@@ -9,7 +9,7 @@ namespace TextAdventure
         [STAThread]
         static void Main()
         {
-            SadConsole.Settings.AllowWindowResize = true;
+            SadConsole.Settings.AllowWindowResize = false;
             SadConsole.Settings.UnlimitedFPS = false;
             SadConsole.Settings.ResizeMode = SadConsole.Settings.WindowResizeOptions.Scale;
 

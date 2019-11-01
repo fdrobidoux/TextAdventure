@@ -84,14 +84,9 @@ namespace TextAdventure.Core.Consoles
                 Position = new Point(width / 2, 0),
                 Text = "Inventory",
                 TextAlignment = SadConsole.HorizontalAlignment.Center,
-                Theme = new SadConsole.Themes.ButtonLinesTheme()
-                {
-                    EndCharacterLeft = ,
-                    EndCharacterRight = ,
-                    BottomRightLineColors = new SadConsole.Cell(Color.Red, Color.Red)
-                }
             });
-            InventoryBtn.Theme .RefreshTheme(SadConsole.Themes.Library.Default.Colors);
+
+            InventoryBtn.GetThemeColors();
         }
     }
 }

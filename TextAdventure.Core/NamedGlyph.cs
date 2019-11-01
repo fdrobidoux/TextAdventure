@@ -86,7 +86,7 @@ namespace TextAdventure.Core
         D = 68,
         E = 69,
         F = 70,
-        G,
+        G = 71,
         H,
         I,
         J,
@@ -108,11 +108,11 @@ namespace TextAdventure.Core
         X,
         Y,
         Z,
-        BRACKET_OPEN,
-        BACK_SLASH,
-        BRACKET_CLOSE,
+        BRACKET_OPEN, // [
+        BACK_SLASH, // /
+        BRACKET_CLOSE, // ]
         CARAT,
-        UNDERSCORE,
+        UNDERSCORE, // _
 
         // 7 @ 96-111
         BACK_QUOTE,
@@ -179,6 +179,49 @@ namespace TextAdventure.Core
         ÿ,
         Ö,
         Ü,
+        CENT,
+        BRITISH_POUND,
+        YEN,
+        PT,
+        FUNCTION,
+
+        // 11 @ 160-175
+        á,
+        í,
+        ó,
+        ú,
+        n_WITH_TILDE,
+        N_WITH_TILDE,
+        A_UNDERSCORE,
+        O_UNDERSCORE,
+        UPSIDE_DOWN_QUESTION_MARK,
+        GUN_RIGHT,
+        GUN_LEFT,
+        HALF,
+        QUARTER,
+        UPSIDE_DOWN_EXCLAMATION_MARK,
+        FRENCH_QUOTES_OPEN,
+        FRENCH_QUOTES_CLOSE,
+
+        // 12 @ 176-191
+        FADE_LOW = 176,
+        FADE_MEDIUM = 177,
+        FADE_HIGH = 178,
+        PIPE_VERTICAL = 179,
+        PIPE_VERTICAL_SIDEPIPE = 180,
+        PIPE_VERTICAL_DOUBLE_SIDEPIPE = 181,
+        PLACEHOLDER_182 = 182,
+        PLACEHOLDER_183 = 183,
+        PLACEHOLDER_184 = 184,
+        PLACEHOLDER_185 = 185,
+        PLACEHOLDER_186 = 186,
+        PLACEHOLDER_187 = 187,
+        PLACEHOLDER_188 = 188,
+        PLACEHOLDER_189 = 189,
+        PLACEHOLDER_190 = 190,
+        PLACEHOLDER_191 = 191,
+
+        // 13 @ 192-207
 
     }
 }
