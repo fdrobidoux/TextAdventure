@@ -5,21 +5,25 @@ using SadConsole;
 using SadConsole.Input;
 using Console = SadConsole.Console;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using TextAdventure.Core.UI;
 using SadConsole.Controls;
 using SadConsole.Themes;
 using TextAdventure.Core.Console;
 using TextAdventure.Core.Consoles;
+using TextAdventure.Core.Consoles.Inventory;
 
 namespace TextAdventure
 {
     public class TextGame : SadConsole.Game
     {
         HUDConsole MyHUDConsole;
+        InventoryConsole MyInventoryConsole;
+        
         TestHealthConsole someTestHealthConsole;
         TestHealthConsole someTestManaConsole;
 
-        public TextGame() : base("", 50, 100, null)
+        public TextGame() : base("", 120, 40, null)
         {
             
         }
@@ -31,11 +35,16 @@ namespace TextAdventure
 
             base.Initialize();
 
+            SadConsole.Global.LoadFont("Content/fonts/InventorySprites_16x16.font");
+
             Add(MyHUDConsole = new HUDConsole(Global.CurrentScreen.Width, 4));
 
             // Collection of buttons for testing.
             Add(someTestHealthConsole = new TestHealthConsole(80, 20, MyHUDConsole.HpProgressBar) { Position = new Point(0, 5) });
             Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
+
+            MyInventoryConsole = new InventoryConsole() { Position = new Point(0, 16) };
+            SadConsole.Global.CurrentScreen.Children.Add(MyInventoryConsole);
         }
 
         private void Add(Console screen) 
@@ -50,8 +59,8 @@ namespace TextAdventure
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            someTestHealthConsole.Update(gameTime);
-            someTestManaConsole.Update(gameTime);
+            someTestHealthConsole.Update(gameTime.ElapsedGameTime);
+            someTestManaConsole.Update(gameTime.ElapsedGameTime);
         }
 
         protected override void Draw(GameTime gameTime)

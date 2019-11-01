@@ -79,6 +79,7 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Services\FontManager.cs" />
     <Compile Include="TextGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\fonts\InventorySprites.png" />
     <Content Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>

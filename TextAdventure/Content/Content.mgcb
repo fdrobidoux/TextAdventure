@@ -13,3 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin fonts/InventorySprites_16x16.font
+/copy:fonts/InventorySprites_16x16.font
+
+#begin fonts/InventorySprites_16x16.png
+/copy:fonts/InventorySprites_16x16.png
+

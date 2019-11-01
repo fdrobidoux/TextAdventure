@@ -13,6 +13,8 @@ namespace TextAdventure.Core.Console
     {
         HealthProgressBar hpBar;
         HealthBarTimelineEvent[] testEvents;
+
+
         
         List<SadConsole.Controls.Button> IncrementButtons;
         List<SadConsole.Controls.Button> MinusButtons;
@@ -86,20 +88,26 @@ namespace TextAdventure.Core.Console
             }
         }
 
-        public void Update(GameTime gameTime)
+        public override void Update(TimeSpan time)
         {
             foreach (HealthBarTimelineEvent _event in testEvents)
             {
-                if (!_event.isDone && gameTime.TotalGameTime >= _event.when)
+                if (!_event.isDone && SadConsole.Global.GameTimeUpdate.TotalGameTime >= _event.when)
                 {
                     _event.Done();
                     hpBar.Progress = _event.newValue;
                 }
             }
-            var currentDisplay = DmgLabel;
-            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+
+            base.Update(time);
+        }
+
+        public override void Draw(TimeSpan update)
+        {
             DmgLabel.IsDirty = true;
-            
+            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+
+            base.Draw(update);
         }
 
         public event EventHandler<float> ClickAny;

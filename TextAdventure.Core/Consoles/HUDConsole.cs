@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
+using SadConsole;
 using SadConsole.Controls;
+using TextAdventure.Core.Consoles.Inventory;
 using TextAdventure.Core.Themes;
 using TextAdventure.Core.UI;
 
@@ -19,7 +22,9 @@ namespace TextAdventure.Core.Consoles
 
         public HUDConsole(int width, int height) : base(width, height)
         {
-            // HP bar.
+            // ########
+            // # Health
+            // ########
 
             Add(HpLabel = new Label("Health: ")
             {
@@ -33,8 +38,7 @@ namespace TextAdventure.Core.Consoles
                 CanFocus = false,
                 Theme = new HealthProgressBarTheme()
                 {
-                    Normal = new SadConsole.Cell(Color.Red, Color.Salmon),
-                    MouseOver = new SadConsole.Cell(Color.MonoGameOrange, Color.Chartreuse)
+                    Normal = new SadConsole.Cell(Color.Red, Color.Salmon)
                 }
             });
 
@@ -43,14 +47,15 @@ namespace TextAdventure.Core.Consoles
             hpColors.Text = Color.Red;
             hpColors.ControlBack = Color.Salmon;
             // Damage
-            hpColors.TextLight = Color.MonoGameOrange;
-            hpColors.ControlBackDark = Color.Chartreuse;
+            hpColors.TextLight = Color.DarkRed;
+            hpColors.ControlBackDark = Color.Black;
             
             hpColors.RebuildAppearances();
             HpProgressBar.Theme.RefreshTheme(hpColors);
 
-            // Mana bar.
-
+            // ######
+            // # Mana
+            // ######
             Add(ManaLabel = new Label("Mana :")
             {
                 Position = (HpLabel.Position + new Point(0, 1)),
@@ -61,9 +66,6 @@ namespace TextAdventure.Core.Consoles
                 Position = (ManaLabel.Position + new Point(HpLabel.Width, 0)),
                 CanFocus = false,
                 Theme = new HealthProgressBarTheme()
-                {
-                    
-                }
             });
 
             var manaColors = Theme.Colors.Clone();
@@ -77,16 +79,19 @@ namespace TextAdventure.Core.Consoles
             manaColors.RebuildAppearances();
             ManaProgressBar.Theme.RefreshTheme(manaColors);
 
-            // Menus
-
+            // # Menus
             Add(InventoryBtn = new Button(13, 3)
             {
                 Position = new Point(width / 2, 0),
                 Text = "Inventory",
                 TextAlignment = SadConsole.HorizontalAlignment.Center,
             });
+            InventoryBtn.Click += InventoryBtn_Click;
+        }
 
-            InventoryBtn.GetThemeColors();
+        private void InventoryBtn_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
