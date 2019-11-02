@@ -22,6 +22,8 @@ namespace TextAdventure.Core.Consoles
 
         public HUDConsole(int width, int height) : base(width, height)
         {
+            this.Theme.ControlsConsoleTheme.FillStyle.Background = Color.DarkGray;
+
             // ########
             // # Health
             // ########
@@ -32,14 +34,11 @@ namespace TextAdventure.Core.Consoles
                 CanFocus = false
             });
 
-            Add(HpProgressBar = new HealthProgressBar(width / 4, 1, SadConsole.HorizontalAlignment.Left)
+            Add(HpProgressBar = new HealthProgressBar(width / 4, 1, HorizontalAlignment.Left)
             {
                 Position = (HpLabel.Position + new Point(HpLabel.Width, 0)),
                 CanFocus = false,
                 Theme = new HealthProgressBarTheme()
-                {
-                    Normal = new SadConsole.Cell(Color.Red, Color.Salmon)
-                }
             });
 
             var hpColors = Theme.Colors.Clone();
@@ -61,7 +60,7 @@ namespace TextAdventure.Core.Consoles
                 Position = (HpLabel.Position + new Point(0, 1)),
                 CanFocus = false
             });
-            Add(ManaProgressBar = new HealthProgressBar(width / 4, 1, SadConsole.HorizontalAlignment.Left) 
+            Add(ManaProgressBar = new HealthProgressBar(width / 4, 1, HorizontalAlignment.Left)
             {
                 Position = (ManaLabel.Position + new Point(HpLabel.Width, 0)),
                 CanFocus = false,
@@ -84,7 +83,7 @@ namespace TextAdventure.Core.Consoles
             {
                 Position = new Point(width / 2, 0),
                 Text = "Inventory",
-                TextAlignment = SadConsole.HorizontalAlignment.Center,
+                TextAlignment = HorizontalAlignment.Center,
             });
         }
     }

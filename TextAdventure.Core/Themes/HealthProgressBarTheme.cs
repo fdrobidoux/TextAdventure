@@ -14,10 +14,7 @@ namespace TextAdventure.Core.Themes
         public Rectangle dmgRect;
         private PreviousStateEncapsulator previousState;
 
-        public HealthProgressBarTheme() : base()
-        {
-
-        }
+        public HealthProgressBarTheme() : base() { }
 
         public override void UpdateAndDraw(ControlBase control, TimeSpan time)
         {

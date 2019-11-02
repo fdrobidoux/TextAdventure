@@ -68,14 +68,14 @@ namespace TextAdventure.Core.UI
 #region "Ease out dropping ----------------------------------------------------------------"
 
         public DoubleAnimation dmgDoubleAnimation;
-        public TimeSpan decrementAnimDuration = TimeSpan.FromSeconds(2);
+        public TimeSpan decrementAnimDuration = TimeSpan.FromSeconds(3);
 
         private void startFreshDmgDblAnimation()
         {
             dmgDoubleAnimation = new DoubleAnimation()
             {
                 Duration = decrementAnimDuration,
-                EasingFunction = new SadConsole.EasingFunctions.Circle() { Mode = EasingMode.Out },
+                EasingFunction = new SadConsole.EasingFunctions.Expo() { Mode = EasingMode.Out },
             };
 
             if (FreshDmgValue >= 0.0f)
@@ -99,6 +99,8 @@ namespace TextAdventure.Core.UI
 
             FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
             freshDmgFillSize = (int)(controlSize * FreshDmgValue);
+            if (freshDmgFillSize <= 0)
+                dmgDoubleAnimation.Duration = TimeSpan.FromTicks(0);
         }
 
 #endregion // -----------------------------------------------------------------------------"
