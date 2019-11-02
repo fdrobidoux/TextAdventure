@@ -86,12 +86,6 @@ namespace TextAdventure.Core.Consoles
                 Text = "Inventory",
                 TextAlignment = SadConsole.HorizontalAlignment.Center,
             });
-            InventoryBtn.Click += InventoryBtn_Click;
-        }
-
-        private void InventoryBtn_Click(object sender, EventArgs e)
-        {
-            
         }
     }
 }
