@@ -4,6 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
+    <RootNamespace>TextAdventure</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

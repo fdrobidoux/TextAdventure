@@ -7,18 +7,26 @@
 	"SolidGlyphIndex": 2,
 	"Columns": 8,
 	"IsSadExtended": false,
-	"GlyphDefinitions": {
-		"sword1@0,0": {
-			"Glyph": 16,
-			"Mirror": 0
-		},
-		"sword1@0,1": {
-			"Glyph": 24,
-			"Mirror": 0,
-		},
-		"sword1@1,1": {
-			"Glyph": 25,
-			"Mirror": 0
-		}
-	}
+  "GlyphDefinitions": {
+    "sword1@0,0": {
+      "Glyph": 16,
+      "Mirror": 0
+    },
+    "sword1@0,1": {
+      "Glyph": 24,
+      "Mirror": 0
+    },
+    "sword1@1,1": {
+      "Glyph": 25,
+      "Mirror": 0
+    },
+    "runeBorder_Normal": {
+      "Glyph": 43,
+      "Mirror": 0
+    },
+    "runeBorder_Broken": {
+      "Glyph": 44,
+      "Mirror": 0
+    }
+  }
 }

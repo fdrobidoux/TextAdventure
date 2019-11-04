@@ -40,8 +40,8 @@ namespace TextAdventure
             Add(MyHUDConsole = new HUDConsole(Global.CurrentScreen.Width, 4));
 
             // Collection of buttons for testing.
-            Add(someTestHealthConsole = new TestHealthConsole(80, 20, MyHUDConsole.HpProgressBar) { Position = new Point(0, 5) });
-            Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
+            //Add(someTestHealthConsole = new TestHealthConsole(80, 20, MyHUDConsole.HpProgressBar) { Position = new Point(0, 5) });
+            //Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
 
             MyInventoryConsole = new InventoryConsole() { Position = new Point(0, 16) };
             Add(MyInventoryConsole);
@@ -66,8 +66,8 @@ namespace TextAdventure
         protected override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            someTestHealthConsole.Update(gameTime.ElapsedGameTime);
-            someTestManaConsole.Update(gameTime.ElapsedGameTime);
+            someTestHealthConsole?.Update(gameTime.ElapsedGameTime);
+            someTestManaConsole?.Update(gameTime.ElapsedGameTime);
         }
 
         protected override void Draw(GameTime gameTime)

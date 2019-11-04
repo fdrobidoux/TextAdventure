@@ -7,6 +7,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextAdventure.NetCore", "Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextAdventure.Core", "TextAdventure.Core\TextAdventure.Core.csproj", "{4DE5D3E0-561B-4DE1-8829-BD1F7C918372}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextAdventure.RpgMechanics", "TextAdventure.RpgMechanics\TextAdventure.RpgMechanics.csproj", "{EE30834C-5A22-4C04-97A5-C9A8056B3626}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextAdventure.RpgMechanics.Tests", "TextAdventure.RpgMechanics.Tests\TextAdventure.RpgMechanics.Tests.csproj", "{B75E7E43-2D66-43BA-A582-49621E56FDA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{4DE5D3E0-561B-4DE1-8829-BD1F7C918372}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DE5D3E0-561B-4DE1-8829-BD1F7C918372}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4DE5D3E0-561B-4DE1-8829-BD1F7C918372}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE30834C-5A22-4C04-97A5-C9A8056B3626}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE30834C-5A22-4C04-97A5-C9A8056B3626}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE30834C-5A22-4C04-97A5-C9A8056B3626}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE30834C-5A22-4C04-97A5-C9A8056B3626}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B75E7E43-2D66-43BA-A582-49621E56FDA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B75E7E43-2D66-43BA-A582-49621E56FDA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B75E7E43-2D66-43BA-A582-49621E56FDA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B75E7E43-2D66-43BA-A582-49621E56FDA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
