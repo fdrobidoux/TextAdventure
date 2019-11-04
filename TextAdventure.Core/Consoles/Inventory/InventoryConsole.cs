@@ -21,6 +21,9 @@ namespace TextAdventure.Core.Consoles.Inventory
 
         protected override void OnVisibleChanged()
         {
+            if (IsVisible) this.RootChildren().MoveToTop(this);
+            else this.RootChildren().MoveToBottom(this);
+
             base.OnVisibleChanged();
         }
     }

@@ -44,7 +44,14 @@ namespace TextAdventure
             Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
 
             MyInventoryConsole = new InventoryConsole() { Position = new Point(0, 16) };
-            SadConsole.Global.CurrentScreen.Children.Add(MyInventoryConsole);
+            Add(MyInventoryConsole);
+
+            MyHUDConsole.InventoryBtn.Click += InventoryBtn_Click;
+        }
+
+        private void InventoryBtn_Click(object sender, EventArgs e)
+        {
+            MyInventoryConsole.IsVisible = !MyInventoryConsole.IsVisible;
         }
 
         private void Add(Console screen) 
