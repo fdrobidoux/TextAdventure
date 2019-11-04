@@ -1,0 +1,24 @@
+{
+    "FilePath": "InventorySprites_16x16.png",
+    "GlyphHeight": 16,
+    "GlyphPadding": 0,
+    "GlyphWidth": 16,
+    "Name": "InventorySprites",
+	"SolidGlyphIndex": 2,
+	"Columns": 8,
+	"IsSadExtended": false,
+	"GlyphDefinitions": {
+		"sword1@0,0": {
+			"Glyph": 16,
+			"Mirror": 0
+		},
+		"sword1@0,1": {
+			"Glyph": 24,
+			"Mirror": 0,
+		},
+		"sword1@1,1": {
+			"Glyph": 25,
+			"Mirror": 0
+		}
+	}
+}
