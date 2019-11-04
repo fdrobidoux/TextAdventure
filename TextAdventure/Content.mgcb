@@ -1,8 +1,8 @@
 
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:../bin/$(Platform)
-/intermediateDir:../obj/$(Platform)
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
 /platform:DesktopGL
 /config:
 /profile:Reach
@@ -13,9 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin fonts/InventorySprites_16x16.font
-/copy:fonts/InventorySprites_16x16.font
+#begin Content/fonts/InventorySprites_16x16.font
+/copy:Content/fonts/InventorySprites_16x16.font
 
-#begin fonts/InventorySprites_16x16.png
-/copy:fonts/InventorySprites_16x16.png
+#begin Content/fonts/InventorySprites_16x16.png
+/copy:Content/fonts/InventorySprites_16x16.png
 
