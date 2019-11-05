@@ -7,11 +7,15 @@ namespace TextAdventure.RpgMechanics.Calculations
 {
     public class Health : ProgressStat<int>
     {
-        public Health() : base()
+        
+        public Health(int maxValue) : this(maxValue, maxValue)
+        {
+
+        }
+
+        public Health(int maxValue, int startValue) : base(maxValue, startValue, willTrackOverflow: true)
         {
 
         }
     }
-
-
 }

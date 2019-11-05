@@ -11,6 +11,8 @@ namespace TextAdventure.RpgMechanics.Calculations
         {
             ParameterExpression paramValue = Expression.Parameter(typeof(int), "value");
 
+            // TODO: Modifier
+
             Value = value;
         }
 

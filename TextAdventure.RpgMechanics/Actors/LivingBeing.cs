@@ -10,7 +10,7 @@ namespace TextAdventure.RpgMechanics.Actors
     {
         public Health Health { get; set; }
 
-        public bool IsAlive => Health.CurrentValue != 0;
+        public bool IsAlive => Health.Value > 0;
         
         public LivingBeing()
         {

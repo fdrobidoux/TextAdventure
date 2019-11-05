@@ -4,37 +4,70 @@ using System.Text;
 
 namespace TextAdventure.RpgMechanics.Calculations
 {
-    public class ProgressStat<T> : Stat<T> where T : struct
+    public abstract class ProgressStat<T> : Stat<T> where T : struct, IComparable
     {
-        private T _currentValue;
-        public T CurrentValue { 
-            get => _currentValue; 
-            set {
-                var oldValue = _currentValue;
-                _currentValue = value;
-                ValueChanged?.Invoke(this, new ValueChangedEventArgs<T>(oldValue));
+        public readonly bool _willTrackOverflow = false;
+
+        private T _maximumValue;
+
+        public override T Value
+        {
+            get => _currentValue;
+            protected set {
+                T keptCurrentValue = _currentValue;
+
+                if (value.CompareTo(MaximumValue) > 0)
+                {
+                    base.Value = _maximumValue;
+
+                    if (_willTrackOverflow)
+                    {
+                        T diff = default;
+                        dynamic tempCVal = value;
+                        dynamic tempMax = MaximumValue;
+
+                        try
+                        {
+                            diff = (T)(tempCVal - tempMax);
+                        }
+                        catch (ArithmeticException e)
+                        {
+                            // TODO: Remove me when I'm done.
+                            System.Diagnostics.Debugger.Break();
+                        }
+                        finally
+                        {
+                            OverflowingValue?.Invoke(this, new OverflowingValueEventArgs<T>(diff));
+                        }
+                    }
+                }
+                else
+                {
+                    base.Value = value;
+                }
             }
         }
 
-        public T MaximumValue { get; set; }
+        public T MaximumValue { get => _maximumValue; set => _maximumValue = value; }
 
-        public ProgressStat() : base()
+        public ProgressStat(T maxValue, T startingValue, bool willTrackOverflow = false) : base()
         {
-
+            _willTrackOverflow = willTrackOverflow;
+            _maximumValue = maxValue;
+            _currentValue = startingValue;
         }
 
-        public event ValueChangedEventHandler ValueChanged;
-
-        public delegate void ValueChangedEventHandler(object sender, ValueChangedEventArgs<T> e);
+        public event OverflowingValueEventHandler OverflowingValue;
+        public delegate void OverflowingValueEventHandler(object sender, OverflowingValueEventArgs<T> e);
     }
 
-    public class ValueChangedEventArgs<T> : EventArgs where T : struct
+    public class OverflowingValueEventArgs<T> : EventArgs where T : struct, IComparable
     {
-        public T PreviousValue { get; set; }
+        public T amountOverflowing { get; set; }
 
-        public ValueChangedEventArgs(T previousValue)
+        public OverflowingValueEventArgs(T amountOverflowing)
         {
-            PreviousValue = previousValue;
+            this.amountOverflowing = amountOverflowing;
         }
     }
 }
