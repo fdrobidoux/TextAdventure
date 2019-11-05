@@ -19,8 +19,8 @@ namespace TextAdventure.Core.Consoles.Inventory
             SetGlyph(2, 1, InventorySprites.Sword2[1][0]);
             SetGlyph(3, 1, InventorySprites.Sword2[1][1]);
 
-            SetGlyph(0, 2, 36, Color.Red, Color.Transparent);
-            SetDecorator(0, 2, 1, Font.Master.GetDecorator("runeBorder_Normal", Color.Teal));
+            SetGlyph(0, 2, 43, Color.Gray, Color.Transparent);
+            SetDecorator(0, 2, 1, new CellDecorator(Color.Magenta, 36, 0));
         }
 
         protected override void OnVisibleChanged()
