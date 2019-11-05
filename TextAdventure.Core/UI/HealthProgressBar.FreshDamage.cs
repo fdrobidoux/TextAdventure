@@ -15,9 +15,9 @@ namespace TextAdventure.Core.UI
     [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        private float lastProgressDecrement;
-        public int freshDmgFillSize;
+        public float lastProgressDecrement { get; private set; }
 
+        public int FreshDmgFillSize { get; set; }
         public float FreshDmgValue { get; set; }
 
         private void bindFreshDmgOnProgressChanged()
@@ -32,20 +32,18 @@ namespace TextAdventure.Core.UI
 
             dmgDoubleAnimation?.Reset();
 
-            if (diff == 0.0f) return; // Shouldn't happen ever, but you never know.
-
             FreshDmgValue = MathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
-            freshDmgFillSize = (int)(FreshDmgValue * Width);
+            FreshDmgFillSize = (int)(controlSize * FreshDmgValue);
 
             lastProgressDecrement = progressValue;
 
-            startDropTimer.Restart();
+            //startDropTimer.Restart();
         }
 
         private void updateFreshDamageBar(TimeSpan time)
         {
-            startDropTimer.Update(null, time);
-            updateFreshDmgDblAnimation();
+            //startDropTimer.Update(null, time);
+            //updateFreshDmgDblAnimation();
         }
 
 #region "TIMER - Start dropping ----------------------------------------------------------"
@@ -98,8 +96,8 @@ namespace TextAdventure.Core.UI
                 return;
 
             FreshDmgValue = (float)dmgDoubleAnimation.CurrentValue;
-            freshDmgFillSize = (int)(controlSize * FreshDmgValue);
-            if (freshDmgFillSize <= 0)
+            FreshDmgFillSize = (int)(controlSize * FreshDmgValue);
+            if (FreshDmgFillSize <= 0)
                 dmgDoubleAnimation.Duration = TimeSpan.FromTicks(0);
         }
 

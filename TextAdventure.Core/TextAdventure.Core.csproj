@@ -6,16 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="UI\QtyTrackerConsole.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="GlyphHelper.cs.temp" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
-    <PackageReference Include="SadConsole" Version="8.9.0" />
+    <PackageReference Include="SadConsole" Version="8.9.1" />
   </ItemGroup>
 
   <ItemGroup>

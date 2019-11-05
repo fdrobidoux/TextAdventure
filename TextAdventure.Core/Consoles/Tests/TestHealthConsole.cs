@@ -105,7 +105,7 @@ namespace TextAdventure.Core.Console
         public override void Draw(TimeSpan update)
         {
             DmgLabel.IsDirty = true;
-            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+            DmgLabel.DisplayText = $"fDFS={hpBar.FreshDmgFillSize};fDV={hpBar.FreshDmgValue};";
 
             base.Draw(update);
         }

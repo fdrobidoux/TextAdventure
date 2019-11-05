@@ -24,10 +24,9 @@ namespace TextAdventure.Core.UI
         private void beforeConstruct()
         {
             this.Theme = new HealthProgressBarTheme();
-            //this.FreshDmg = new FreshDamage(this);
             this.Progress = 1.0f;
             this.bindFreshDmgOnProgressChanged();
-            this.createStartDropTimer();
+            //this.createStartDropTimer();
         }
 
 #region "ProgressBar Overrides"
