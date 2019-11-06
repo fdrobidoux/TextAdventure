@@ -1,0 +1,20 @@
+# = Full
+[0-9] = Damaged, Ongoing (counts up until 10 to end for demonstration purposes)
+X = Damaged, Finished
+_ = Empty
+
+################___     Start position
+
+##########00000X___		None finished
+
+##########56789X___		Some have finished
+
+####00000056789X___		Progress change, decreased (-6)
+
+#########0000005678		Progress change, increased (+11)
+
+###############____		All finished
+
+##############5____		Progress change, but fill size unchanged
+
+###############____		0.5s later, back to normal

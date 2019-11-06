@@ -13,6 +13,8 @@ namespace TextAdventure.Core.Themes
     public partial class HealthProgressBarTheme : SadConsole.Themes.ProgressBarTheme
     {
         public Cell FreshDamage;
+        public int FreshDmgFillSize = 0;
+        public float FreshDmgValue = 0.0f;
 
         public Rectangle dmgRect;
         private PreviousStateEncapsulator previousState;
@@ -84,10 +86,10 @@ namespace TextAdventure.Core.Themes
         private void HpBar_ProgressChanged(object sender, EventArgs e)
         {
             /* Plans for this function :
-             * - If fill size hasn't changed but progress has changed and is negative compared to last state, put a fade effect on last fill cell (from left to right)
+             * - If fill size hasn't changed but progress has changed and is negative compared 
+             * to last state, put a fade effect on last fill cell (from left to right)
              * - Translate effects to an offset so that we keep the state of an effect happening.
              */
-
 
             if (!(sender is HealthProgressBar hpBar)) 
                 return;
@@ -95,17 +97,20 @@ namespace TextAdventure.Core.Themes
             // Set fresh damage fill size based on how many effects are still active.
             if (progressingEffects.Count > 0)
             {
-                var effectsDone = progressingEffects.Where(x => x.IsFinished);
-                hpBar.FreshDmgFillSize -= effectsDone.Count();
+                var effectsDone = progressingEffects.Where(x => x.IsFinished).Count();
+                FreshDmgFillSize -= effectsDone;
             }
 
             // Obtain all the non-finished effects and translate them
             // say previous fill size = 0
-            int offset = previousState.freshDmgFillSize - 
-
-
-
-
+            int offset = hpBar.fillSize - previousState.fillSize;
+            
+            if (offset < 0)
+            {
+                // Negative, add new effects.
+                new Fade().
+                
+            }
 
 
             dmgRect = new Rectangle(hpBar.fillSize, 0, hpBar.FreshDmgFillSize, hpBar.Height);
