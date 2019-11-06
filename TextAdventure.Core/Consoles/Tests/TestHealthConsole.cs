@@ -14,11 +14,11 @@ namespace TextAdventure.Core.Console
         HealthProgressBar hpBar;
         HealthBarTimelineEvent[] testEvents;
         
-        List<SadConsole.Controls.Button> IncrementButtons;
-        List<SadConsole.Controls.Button> MinusButtons;
+        readonly List<SadConsole.Controls.Button> IncrementButtons;
+        readonly List<SadConsole.Controls.Button> MinusButtons;
 
         ButtonTheme buttonTheme;
-        Label DmgLabel;
+        Label dmgLabel;
 
         public TestHealthConsole(int width, int height, HealthProgressBar hpBar, string testerName = "Bar Tester") : base(width, height)
         {
@@ -49,7 +49,7 @@ namespace TextAdventure.Core.Console
             int biggestHeightForRow = 0;
             int lastLineBiggestHeight = 0;
             
-            Add(DmgLabel = new Label(80)
+            Add(dmgLabel = new Label(80)
             {
                 Position = new Point(0, 0),
             });
@@ -102,8 +102,8 @@ namespace TextAdventure.Core.Console
 
         public override void Draw(TimeSpan update)
         {
-            DmgLabel.IsDirty = true;
-            DmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
+            dmgLabel.IsDirty = true;
+            dmgLabel.DisplayText = $"fDFS={hpBar.freshDmgFillSize};fDV={hpBar.FreshDmgValue};";
 
             base.Draw(update);
         }
