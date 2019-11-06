@@ -71,7 +71,7 @@ namespace TextAdventure.Core.Console
                     currentButton.TextAlignment = HorizontalAlignment.Center;
                     
                     // Somehow, this works. I have no idea how, my hands wrote this, ask them !
-                    currentButton.Position = new Point(x: (currentButton.Width * j) + j, y: lastLineBiggestHeight * i + baseTopPadding);
+                    currentButton.Position = new Point((currentButton.Width * j) + j, lastLineBiggestHeight * i + baseTopPadding);
 
                     // I don't care about good UX tbh, so align rows based on biggest height in last row.
                     biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height);
@@ -88,6 +88,8 @@ namespace TextAdventure.Core.Console
 
         public override void Update(TimeSpan time)
         {
+            base.Update(time);
+
             foreach (HealthBarTimelineEvent _event in testEvents)
             {
                 if (!_event.isDone && SadConsole.Global.GameTimeUpdate.TotalGameTime >= _event.when)
@@ -96,8 +98,6 @@ namespace TextAdventure.Core.Console
                     hpBar.Progress = _event.newValue;
                 }
             }
-
-            base.Update(time);
         }
 
         public override void Draw(TimeSpan update)

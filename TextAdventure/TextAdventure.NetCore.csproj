@@ -5,6 +5,17 @@
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
     <RootNamespace>TextAdventure</RootNamespace>
+    <MonoGamePlatform>DesktopGL</MonoGamePlatform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
@@ -24,11 +35,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AmazonMWSClientLib" Version="1.0.0.1" />
     <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
     <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7" />
     <PackageReference Include="SadConsole" Version="8.9.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\TextAdventure.Core\TextAdventure.Core.csproj" />
   </ItemGroup>
