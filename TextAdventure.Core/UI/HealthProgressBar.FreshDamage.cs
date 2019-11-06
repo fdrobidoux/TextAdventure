@@ -15,7 +15,7 @@ namespace TextAdventure.Core.UI
     [DataContract]
     public partial class HealthProgressBar : SadConsole.Controls.ProgressBar
     {
-        private float lastProgressDecrement;
+        public float lastProgressDecrement;
         public int freshDmgFillSize;
 
         public float FreshDmgValue { get; set; }
@@ -35,7 +35,7 @@ namespace TextAdventure.Core.UI
             if (diff == 0.0f) return; // Shouldn't happen ever, but you never know.
 
             FreshDmgValue = MathHelper.Clamp(FreshDmgValue - diff, 0.0f, 1.0f);
-            freshDmgFillSize = (int)(FreshDmgValue * Width);
+            freshDmgFillSize = (int)(FreshDmgValue * controlSize);
 
             lastProgressDecrement = progressValue;
 

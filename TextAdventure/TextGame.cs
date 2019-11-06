@@ -40,8 +40,8 @@ namespace TextAdventure
             Add(MyHUDConsole = new HUDConsole(Global.CurrentScreen.Width, 4));
 
             // Collection of buttons for testing.
-            //Add(someTestHealthConsole = new TestHealthConsole(80, 20, MyHUDConsole.HpProgressBar) { Position = new Point(0, 5) });
-            //Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
+            Add(someTestHealthConsole = new TestHealthConsole(80, 20, MyHUDConsole.HpProgressBar) { Position = new Point(0, 5) });
+            Add(someTestManaConsole = new TestHealthConsole(80, 20, MyHUDConsole.ManaProgressBar) { Position = new Point(30, 5) });
 
             MyInventoryConsole = new InventoryConsole() { Position = new Point(0, 16) };
             Add(MyInventoryConsole);

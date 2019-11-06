@@ -58,11 +58,6 @@ namespace TextAdventure.Core.UI
             base.OnThemeChanged();
         }
 
-        public void TestHPConsole_ClickAny(object sender, float e)
-        {
-            this.Progress = MathHelper.Clamp(this.Progress + e, 0.0f, 1.0f);
-        }
-
         #endregion
     }
 }

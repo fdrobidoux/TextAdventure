@@ -13,8 +13,6 @@ namespace TextAdventure.Core.Console
     {
         HealthProgressBar hpBar;
         HealthBarTimelineEvent[] testEvents;
-
-
         
         List<SadConsole.Controls.Button> IncrementButtons;
         List<SadConsole.Controls.Button> MinusButtons;
@@ -57,7 +55,7 @@ namespace TextAdventure.Core.Console
             });
 
             this.hpBar = hpBar;
-            ClickAny += hpBar.TestHPConsole_ClickAny;
+            ClickAny += (sender, e) => e.Item2.Progress = SadConsole.MathHelper.Clamp(e.Item2.Progress + e.Item1, 0.0f, 1.0f);
 
             buttonTheme = new ButtonLinesTheme();
 
@@ -110,7 +108,7 @@ namespace TextAdventure.Core.Console
             base.Draw(update);
         }
 
-        public event EventHandler<float> ClickAny;
+        public event EventHandler<Tuple<float, HealthProgressBar>> ClickAny;
 
         private void CurrentButton_Click(object sender, EventArgs e)
         {
@@ -142,7 +140,7 @@ namespace TextAdventure.Core.Console
                     throw new NotImplementedException("Btn n'est pas géré.");
             }
 
-            ClickAny?.Invoke(btn, valeur);
+            ClickAny?.Invoke(btn, new Tuple<float, HealthProgressBar>(valeur, this.hpBar));
         }
     }
     internal class HealthBarTimelineEvent
