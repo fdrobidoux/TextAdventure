@@ -1,76 +1,72 @@
 {
-    "Name": "EntityGuy",
-    "FilePath": "EntityGuy.png",
+	"Name": "EntityGuy",
+	"FilePath": "EntityGuy.png",
 	"Columns": 8,
 	"SolidGlyphIndex": 1,
-    "GlyphHeight": 32,
-    "GlyphWidth": 16,
-    "GlyphPadding": 0,
+	"GlyphHeight": 32,
+	"GlyphWidth": 16,
+	"GlyphPadding": 0,
 	"IsSadExtended": true,
-  "GlyphDefinitions": {
-	"Idle" {
-		Glyph: 2,
-		Mirror: 0
-	},
-	"WalkRight": {
-		Glyph: 3,
-		Mirror: 0
-	},
-	"WalkRight1": {
-		Glyph: 4,
-		Mirror: 0
-	},
-	"WalkRight2": {
-		Glyph: 5,
-		Mirror: 0
-	},
-	"WalkRight3": {
-		Glyph: 6,
-		Mirror: 0
-	},
-	"WalkRight4": {
-		Glyph: 7,
-		Mirror: 0
-	},
-	"WalkRight5": {
-		Glyph: 8,
-		Mirror: 0
-	},
-	"WalkRight6": {
-		Glyph: 9,
-		Mirror: 0
-	},
-	"WalkLeft": {
-		Glyph: 3,
-		Mirror: 1
-	},
-	"WalkLeft1": {
-		Glyph: 4,
-		Mirror: 1
-	},
-	"WalkLeft2": {
-		Glyph: 5,
-		Mirror: 1
-	},
-	"WalkLeft3": {
-		Glyph: 6,
-		Mirror: 1
-	},
-	"WalkLeft4": {
-		Glyph: 7,
-		Mirror: 1
-	},
-	"WalkLeft5": {
-		Glyph: 8,
-		Mirror: 1
-	},
-	"WalkLeft6": {
-		Glyph: 9,
-		Mirror: 1
-	},
-	"WalkUp": {
-		Glyph: 10,
-		Mirror: 0
+	"GlyphDefinitions": {
+		"Idle": {
+			"Glyph": 2,
+			"Mirror": 0
+		},
+		"WalkRight": {
+			"Glyph": 3,
+			"Mirror": 0
+		},
+		"WalkRight1": {
+			"Glyph": 4,
+			"Mirror": 0
+		},
+		"WalkRight2": {
+			"Glyph": 5,
+			"Mirror": 0
+		},
+		"WalkRight3": {
+			"Glyph": 6,
+			"Mirror": 0
+		},
+		"WalkRight4": {
+			"Glyph": 7,
+			"Mirror": 0
+		},
+		"WalkRight5": {
+			"Glyph": 8,
+			"Mirror": 0
+		},
+		"WalkRight6": {
+			"Glyph": 9,
+			"Mirror": 0
+		},
+		"WalkLeft": {
+			"Glyph": 3,
+			"Mirror": 1
+		},
+		"WalkLeft1": {
+			"Glyph": 4,
+			"Mirror": 1
+		},
+		"WalkLeft2": {
+			"Glyph": 5,
+			"Mirror": 1
+		},
+		"WalkLeft3": {
+			"Glyph": 6,
+			"Mirror": 1
+		},
+		"WalkLeft4": {
+			"Glyph": 7,
+			"Mirror": 1
+		},
+		"WalkLeft5": {
+			"Glyph": 8,
+			"Mirror": 1
+		},
+		"WalkLeft6": {
+			"Glyph": 9,
+			"Mirror": 1
+		}
 	}
-  }
 }

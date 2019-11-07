@@ -12,14 +12,15 @@ namespace TextAdventure.Core.Consoles.Tests
 {
     public class MainTestSelectorConsole : SadConsole.Console
     {
-        private bool _testGoingOn = false;
-        private Action _testDisposerSub;
+        private bool _isTestGoingOn = false;
+        private Action _disposeur;
 
         public SadConsole.ControlsConsole SelectionConsole;
 
         public MainTestSelectorConsole() : base(Global.CurrentScreen.Width, Global.CurrentScreen.Height)
         {
             UseKeyboard = true;
+            Cursor.Position = Point.Zero;
 
             SelectionConsole = new ControlsConsole(Global.CurrentScreen.Width, 6);
 
@@ -44,100 +45,109 @@ namespace TextAdventure.Core.Consoles.Tests
                     };
 
                     foreach (TestHealthConsole cli in testHPConsoles)
-                    {
                         Children.Add(cli);
-                    }
-
-                    //return testHPConsoles.AsEnumerable();
                 },
                 disposer: () =>
                 {
                     Children.RemoveAll(out IEnumerable<HUDConsole> removedHUD);
-                    removedHUD.First().RemoveAll();
+                    removedHUD.First().Clear();
 
                     Children.RemoveAll(out IEnumerable<TestHealthConsole> removedTestHPConsoles);
                     foreach (TestHealthConsole testHpCli in removedTestHPConsoles)
-                        testHpCli.RemoveAll();
+                        testHpCli.Clear();
                 }));
 
             // Test pixel offset.
             SelectionConsole.Add(MakeTestButtonFor<TestPixelOffsetConsole>("Pixel Offset", "BtnTestPixelOffsetConsole",
                 creator: () =>
                 {
-                    var myTestPixelOffsetConsole = new TestPixelOffsetConsole(10, 5);
-                    Children.Add(myTestPixelOffsetConsole);
-                    //return new List<TestPixelOffsetConsole>() { myTestPixelOffsetConsole };
+                    Children.Add(new TestPixelOffsetConsole(10, 5));
                 },
                 disposer: () =>
                 {
-                    Children.RemoveAll();
+                    Children.RemoveAll(out IEnumerable<TestPixelOffsetConsole> removedTest);
+                    foreach (var child in removedTest)
+                        child.Children.Clear();
                 }));
 
-            SelectionConsole.Add(MakeTestButtonFor<TestAnimatedEntitiesConsole>("", "",
+            // Test animated entities.
+            SelectionConsole.Add(MakeTestButtonFor<TestAnimatedEntitiesConsole>("Animated Entities", "BtnTestAnimatedEntities",
                 creator: () =>
                 {
-
+                    Children.Add(new TestAnimatedEntitiesConsole());
                 },
                 disposer: () =>
                 {
-
+                    Children.RemoveAll(out IEnumerable<TestAnimatedEntitiesConsole> removedTest);
+                    foreach (var child in removedTest)
+                        child.Children.Clear();
                 }));
+
+            Children.Add(SelectionConsole);
         }
 
         private Button MakeTestButtonFor<ConsoleType>(string text, string name, Action creator, Action disposer) where ConsoleType : SadConsole.Console
         {
+            // Create btn
             var btn = new Button(text.Length + 2, 1)
             {
-                Text = "Health Bars",
-                Name = "BtnTestHealth",
+                Text = text,
+                Name = name,
                 Theme = new SadConsole.Themes.Button3dTheme()
             };
+            
+            // Calc position
+            Point calcPos = new Point(btn.Width + 2, 0);
+            if ((Cursor.Position + calcPos).X > Global.CurrentScreen.Width)
+            {
+                Cursor.Position = new Point(0, Cursor.Position.Y + 1);
+            }
+            btn.Position = Cursor.Position;
+            Cursor.Position = Cursor.Position + calcPos;
+
+            // Add to SelectionConsole
+            SelectionConsole.Add(btn);
 
             btn.Click += (s, e) =>
             {
-                /*IEnumerable<ConsoleType> consolesCreated = */creator.Invoke();
+                DeactivateCurrentTest();
+                creator.Invoke();
                 SelectionConsole.IsVisible = false;
-                _testGoingOn = true;
+                _isTestGoingOn = true;
             };
-            _testDisposerSub = disposer;
+            _disposeur = disposer;
 
             return btn;
         }
 
-        private void SetUpHealthBarTest()
+        public override void Update(TimeSpan timeElapsed)
         {
-            var btn = new SadConsole.Controls.Button(10, 1)
+            base.Update(timeElapsed);
+
+            if (Global.KeyboardState.IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                Text = "Health Bars",
-                Name = "BtnTestHealth",
-                Theme = new SadConsole.Themes.Button3dTheme()
-            };
-            SelectionConsole.Add(btn);
+                DeactivateCurrentTest();
+            }
         }
 
         public override bool ProcessKeyboard(Keyboard info)
         {
             if (info.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.Escape))
             {
-                if (_testGoingOn)
-                {
-                    _testDisposerSub.Invoke();
-                    SelectionConsole.IsVisible = true;
-                    _testGoingOn = false;
-                }
-
+                DeactivateCurrentTest();
             }
+
             return base.ProcessKeyboard(info);
         }
 
-        public override void Draw(TimeSpan timeElapsed)
+        private void DeactivateCurrentTest()
         {
-            base.Draw(timeElapsed);
-        }
-
-        public override void Update(TimeSpan timeElapsed)
-        {
-            base.Update(timeElapsed);
+            if (_isTestGoingOn)
+            {
+                _disposeur?.Invoke();
+                SelectionConsole.IsVisible = true;
+                _isTestGoingOn = false;
+            }
         }
     }
 }

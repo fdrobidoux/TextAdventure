@@ -13,6 +13,12 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Content/fonts/EntityGuy.font
+/copy:Content/fonts/EntityGuy.font
+
+#begin Content/fonts/EntityGuy.png
+/copy:Content/fonts/EntityGuy.png
+
 #begin Content/fonts/InventorySprites_16x16.font
 /copy:Content/fonts/InventorySprites_16x16.font
 

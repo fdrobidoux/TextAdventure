@@ -12,8 +12,6 @@ namespace TextAdventure
 {
     public class TextGame : SadConsole.Game
     {
-        InventoryConsole myInventoryConsole;
-
         public TextGame() : base("", 120, 40, null)
         {
             // Generally you don't want to hide the mouse from the user
@@ -45,7 +43,8 @@ namespace TextAdventure
         {
             base.Update(gameTime);
 
-            
+            if (Global.KeyboardState.IsKeyPressed(XNAInput.Keys.F1))
+                SadConsole.Debug.CurrentScreen.Show();
         }
     }
 }

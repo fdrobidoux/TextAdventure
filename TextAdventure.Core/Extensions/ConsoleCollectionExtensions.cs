@@ -9,7 +9,7 @@ namespace SadConsole
     {
         public static void RemoveAll<T>(this SadConsole.ConsoleCollection _thisCliClec) where T : SadConsole.Console
         {
-            foreach (SadConsole.Console cli in _thisCliClec)
+            foreach (SadConsole.Console cli in _thisCliClec.ToList())
                 if (cli is T cliAsT)
                     _thisCliClec.Remove(cliAsT);
         }
@@ -18,7 +18,7 @@ namespace SadConsole
         {
             var removed = new List<T>();
 
-            foreach (SadConsole.Console cli in _thisCliClec)
+            foreach (SadConsole.Console cli in _thisCliClec.ToList())
             {
                 if (cli is T cliAsT)
                 {
@@ -38,7 +38,7 @@ namespace SadConsole
 
         public static void RemoveAll(this SadConsole.ConsoleCollection _thisCliClec)
         {
-            foreach (SadConsole.Console cli in _thisCliClec)
+            foreach (SadConsole.Console cli in _thisCliClec.ToList())
                 _thisCliClec.Remove(cli);
         }
 
