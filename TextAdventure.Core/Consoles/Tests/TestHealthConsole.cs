@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using SadConsole;
 using SadConsole.Controls;
 using Microsoft.Xna.Framework;
 using SadConsole.Themes;
 using TextAdventure.Core.UI;
 
-namespace TextAdventure.Core.Console
+namespace TextAdventure.Core.Consoles.Tests
 {
     public class TestHealthConsole : ControlsConsole
     {
@@ -20,7 +19,7 @@ namespace TextAdventure.Core.Console
         ButtonTheme buttonTheme;
         Label dmgLabel;
 
-        public TestHealthConsole(int width, int height, HealthProgressBar hpBar, string testerName = "Bar Tester") : base(width, height)
+        public TestHealthConsole(int width, int height, HealthProgressBar hpBar) : base(width, height)
         {
             // Just for testing.
             testEvents = new[] {

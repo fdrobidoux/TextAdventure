@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using XnaInput = Microsoft.Xna.Framework.Input;
 using SadConsole;
 
-namespace TextAdventure.Core.Consoles
+namespace TextAdventure.Core.Consoles.Tests
 {
     public class TestPixelOffsetConsole : SadConsole.Console
     {
@@ -30,11 +29,6 @@ namespace TextAdventure.Core.Consoles
             Children.Add(ViewPositionConsole);
         }
 
-        public override void Draw(TimeSpan timeElapsed)
-        {
-            base.Draw(timeElapsed);
-        }
-
         public override void Update(TimeSpan timeElapsed)
         {
             base.Update(timeElapsed);
@@ -56,12 +50,10 @@ namespace TextAdventure.Core.Consoles
             if (keyboardState.IsKeyDown(XnaInput.Keys.Right))
             {
                 movementVector += Vector2.UnitX;
-                //this.ShiftRight();
             }
             else if (keyboardState.IsKeyDown(XnaInput.Keys.Left))
             {
                 movementVector -= Vector2.UnitX;
-                //this.ShiftLeft();
             }
 
             Point newPosition = (movementVector * (float)timeElapsed.TotalSeconds * 25).ToPoint();
@@ -94,7 +86,6 @@ namespace TextAdventure.Core.Consoles
             previousMouseState = mouseState;
 
             ViewPositionConsole.Position = new Point(mouseState.X, mouseState.Y);
-
             RealPositionConsole.Position = ViewPositionConsole.Position.PixelLocationToConsole(Font);
         }
     }
