@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SadConsole;
 using System.Linq;
 
-namespace SadConsole.What
+namespace SadConsole
 {
     public static class ConsoleCollectionExtensions
     {
