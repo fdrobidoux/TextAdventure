@@ -19,13 +19,16 @@ namespace TextAdventure.Core.Consoles.Tests
         ButtonTheme buttonTheme;
         Label dmgLabel;
 
+        TimeSpan timeThisIsOpen;
+
         public TestHealthConsole(int width, int height, HealthProgressBar hpBar) : base(width, height)
         {
             // Just for testing.
             testEvents = new[] {
-                new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(1)),
+                new HealthBarTimelineEvent(0.5f, TimeSpan.FromSeconds(0.80)),
                 new HealthBarTimelineEvent(0.15f, TimeSpan.FromSeconds(1.75)),
-                new HealthBarTimelineEvent(0.25f, TimeSpan.FromSeconds(2.25)),
+                new HealthBarTimelineEvent(0.17f, TimeSpan.FromSeconds(2.25)),
+                new HealthBarTimelineEvent(0.30f, TimeSpan.FromSeconds(2.75)),
             };
 
             IncrementButtons = new List<Button>() {
@@ -89,9 +92,11 @@ namespace TextAdventure.Core.Consoles.Tests
         {
             base.Update(time);
 
+            timeThisIsOpen += time;
+
             foreach (HealthBarTimelineEvent _event in testEvents)
             {
-                if (!_event.isDone && SadConsole.Global.GameTimeUpdate.TotalGameTime >= _event.when)
+                if (!_event.isDone && timeThisIsOpen >= _event.when)
                 {
                     _event.Done();
                     hpBar.Progress = _event.newValue;
