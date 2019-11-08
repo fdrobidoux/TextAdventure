@@ -48,6 +48,7 @@ namespace TextAdventure.Core.Consoles.Tests
             Button currentButton;
 
             int baseTopPadding = 2;
+            Point offset = Point.Zero;
             int biggestHeightForRow = 0;
             int lastLineBiggestHeight = 0;
             
@@ -64,6 +65,7 @@ namespace TextAdventure.Core.Consoles.Tests
             for (var i = 0; i < lsOfBtnListe.Length; i++)
             {
                 currentBtnList = lsOfBtnListe[i];
+                biggestHeightForRow = 0;
 
                 for (var j = 0; j < currentBtnList.Count; j++)
                 {
@@ -71,9 +73,9 @@ namespace TextAdventure.Core.Consoles.Tests
 
                     currentButton.Theme = buttonTheme;
                     currentButton.TextAlignment = HorizontalAlignment.Center;
-                    
-                    // Somehow, this works. I have no idea how, my hands wrote this, ask them !
-                    currentButton.Position = new Point((currentButton.Width * j) + j, lastLineBiggestHeight * i + baseTopPadding);
+
+                    currentButton.Position = Cursor.Position;
+                    Cursor.Position += new Point(currentButton.Width, 0);
 
                     // I don't care about good UX tbh, so align rows based on biggest height in last row.
                     biggestHeightForRow = Math.Max(biggestHeightForRow, currentButton.Height);
@@ -83,8 +85,8 @@ namespace TextAdventure.Core.Consoles.Tests
 
                     Add(currentButton);
                 }
-
-                lastLineBiggestHeight = biggestHeightForRow;
+                
+                Cursor.Position = new Point(0, Cursor.Position.Y + biggestHeightForRow);
             }
         }
 

@@ -6,7 +6,7 @@
 	"GlyphHeight": 32,
 	"GlyphWidth": 16,
 	"GlyphPadding": 0,
-	"IsSadExtended": true,
+	"IsSadExtended": false,
 	"GlyphDefinitions": {
 		"Idle": {
 			"Glyph": 2,

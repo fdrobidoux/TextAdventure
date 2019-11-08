@@ -15,7 +15,7 @@ namespace TextAdventure.Core.Consoles.Tests
         {
             UseKeyboard = true;
 
-            Font = Global.Fonts["EntityGuy"].GetFont(Font.FontSizes.One);
+            Font = Global.Fonts["EntityGuy"].GetFont(Font.FontSizes.Two);
 
             Children.Add(stickman = new EntityGuy(Font.SizeMultiple));
         }
