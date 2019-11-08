@@ -1,67 +1,116 @@
 ﻿using System;
-using System.Collections.Generic;
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Graphics;
 using SadConsole;
 using SadConsole.Entities;
-using SadConsole.Input;
+using SadInput = SadConsole.Input;
+using static SadConsole.FontMaster;
+using Microsoft.Xna.Framework;
 
 namespace TextAdventure.Core.Entities
 {
     public class EntityGuy : Entity
     {
-        private readonly AnimatedConsole animIdle;
-        private readonly AnimatedConsole animWalkRight;
+        private AnimatedConsole animIdle;
+        private AnimatedConsole animWalkRight;
+        private AnimatedConsole animWalkLeft;
 
         public EntityGuy(Font.FontSizes fontSize) : base(1, 1)
         {
             UseKeyboard = true;
+            IsFocused = true;
 
             Font = Global.Fonts["EntityGuy"].GetFont(fontSize);
 
+            InitializeAnimations();
+        }
+
+        private void InitializeAnimations()
+        {
+            // Idle animation
             animIdle = new AnimatedConsole("default", 1, 1, Font);
             animIdle.CreateFrame().SetGlyph(0, 0, Font.Master.GetGlyphDefinition("Idle").Glyph);
-            this.Animations.Add("idle", animIdle);
+            Animations.Add("Idle", animIdle);
 
-            animWalkRight = new AnimatedConsole("walkRight", 1, 1, Font)
+            // Walk right animation
+            animWalkRight = new AnimatedConsole("WalkRight", 1, 1, Font)
             {
                 AnimationDuration = 0.5f,
                 Repeat = true,
             };
-            
-            int[] allFrames = new[] { 3, 4, 5, 6, 7, 8, 9, 2 };
-            for (int i = 0; i < allFrames.Length; i++)
+
+            foreach (GlyphDefinition glyphDef in Font.Master.ListGlyphDefinitions("WalkRight"))
             {
-                CellSurface frame = animWalkRight.CreateFrame();
-                frame.SetGlyph(0, 0, allFrames[i]);
+                Cell singleCell = animWalkRight.CreateFrame().Cells[0];
+                singleCell.Glyph = glyphDef.Glyph;
+                singleCell.Mirror = glyphDef.Mirror;
             }
+            Animations.Add("WalkRight", animWalkRight);
 
-            Animations.Add("walkRight", animWalkRight);
-            Animation = Animations["idle"];
-            Animation.Start();
-
-            //Font.Master.GetGlyphDefinition($"WalkRight{i}").Glyph
+            animWalkLeft = new AnimatedConsole("WalkLeft", 1, 1, Font)
+            {
+                AnimationDuration = 0.5f,
+                Repeat = true
+            };
+            foreach (GlyphDefinition glyphDef in Font.Master.ListGlyphDefinitions("WalkRight", SpriteEffects.FlipHorizontally))
+            {
+                Cell singleCell = animWalkLeft.CreateFrame().Cells[0];
+                singleCell.Glyph = glyphDef.Glyph;
+                singleCell.Mirror = glyphDef.Mirror;
+            }
+            Animations.Add("WalkLeft", animWalkLeft);
         }
 
-        public override bool ProcessKeyboard(Keyboard info)
+        public override bool ProcessKeyboard(SadInput.Keyboard info)
         {
-            if (info.IsKeyPressed(Microsoft.Xna.Framework.Input.Keys.Right))
+            // TODO use some StateMachine instead.
+
+            if (info.IsKeyDown(Keys.Right))
             {
-                Animation = Animations["walkRight"];
-                Animation.Start();
+                Animation = Animations["WalkRight"];
             }
-            else if (info.IsKeyReleased(Microsoft.Xna.Framework.Input.Keys.Right))
+            else if (info.IsKeyDown(Keys.Left))
             {
-                Animation.Stop();
+                Animation = Animations["WalkLeft"];
             }
+            else Animation = Animations["Idle"];
+
+            Animation.Start();
 
             return base.ProcessKeyboard(info);
         }
 
+        
+
         public override void Update(TimeSpan timeElapsed)
         {
-            if (UseKeyboard)
-                ProcessKeyboard(SadConsole.Global.KeyboardState);
+            UpdateMovementRealWay(timeElapsed);
 
             base.Update(timeElapsed);
+        }
+
+        Vector2 moveVector = Vector2.Zero;
+
+        private void UpdateMovementRealWay(TimeSpan timeElapsed)
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Down))
+                moveVector += Vector2.UnitY;
+            else if (keyboardState.IsKeyDown(Keys.Up))
+                moveVector -= Vector2.UnitY;
+
+            if (keyboardState.IsKeyDown(Keys.Right))
+                moveVector += Vector2.UnitX;
+            else if (keyboardState.IsKeyDown(Keys.Left))
+                moveVector -= Vector2.UnitX;
+
+            Point newPosition = (moveVector * (float)timeElapsed.TotalSeconds * 5).ToPoint();
+
+            if (newPosition.Equals(Position)) return;
+
+            // Do viewPosition.
+            Position = newPosition;
         }
     }
 }

@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using LINQ = System.Linq.Enumerable;
-using Microsoft.Xna.Framework.Input;
-using Microsoft.Xna.Framework.Graphics;
 using SadConsole;
 using SadConsole.Entities;
-using SadConsole.Input;
 using TextAdventure.Core.Entities;
 
 namespace TextAdventure.Core.Consoles.Tests
