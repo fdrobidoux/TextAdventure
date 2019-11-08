@@ -19,7 +19,7 @@ namespace TextAdventure.Core.Entities
         {
             UseKeyboard = true;
             IsFocused = true;
-            UsePixelPositioning = true;
+            //UsePixelPositioning = true;
 
             Font = Global.Fonts["EntityGuy"].GetFont(fontSize);
 
@@ -91,7 +91,6 @@ namespace TextAdventure.Core.Entities
         }
 
         Vector2 moveVector = Vector2.Zero;
-        readonly Vector2 LocationToPixel;
 
         private void UpdateMovementRealWay(TimeSpan timeElapsed)
         {
@@ -107,7 +106,7 @@ namespace TextAdventure.Core.Entities
             else if (keyboardState.IsKeyDown(Keys.Left))
                 moveVector -= Vector2.UnitX;
 
-            Point newPosition = (moveVector * new Point(1, 1).ConsoleLocationToPixel(Font.Size.X, Font.Size.Y / 2).ToVector2() * 5 * (float)timeElapsed.TotalSeconds).ToPoint();
+            Point newPosition = (moveVector * 5 * (float)timeElapsed.TotalSeconds).ToPoint();
 
             if (newPosition.Equals(Position)) return;
 
