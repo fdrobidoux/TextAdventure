@@ -49,12 +49,7 @@ namespace TextAdventure.Core.Consoles.Tests
                 },
                 disposer: () =>
                 {
-                    Children.RemoveAll(out IEnumerable<HUDConsole> removedHUD);
-                    removedHUD.First().Clear();
-
-                    Children.RemoveAll(out IEnumerable<TestHealthConsole> removedTestHPConsoles);
-                    foreach (TestHealthConsole testHpCli in removedTestHPConsoles)
-                        testHpCli.Clear();
+                    Children.Clear();
                 }));
 
             // Test pixel offset.
@@ -65,9 +60,7 @@ namespace TextAdventure.Core.Consoles.Tests
                 },
                 disposer: () =>
                 {
-                    Children.RemoveAll(out IEnumerable<TestPixelOffsetConsole> removedTest);
-                    foreach (var child in removedTest)
-                        child.Children.Clear();
+                    Children.Clear();
                 }));
 
             // Test animated entities.
@@ -78,9 +71,7 @@ namespace TextAdventure.Core.Consoles.Tests
                 },
                 disposer: () =>
                 {
-                    Children.RemoveAll(out IEnumerable<TestAnimatedEntitiesConsole> removedTest);
-                    foreach (var child in removedTest)
-                        child.Children.Clear();
+                    Children.Clear();
                 }));
 
             Children.Add(SelectionConsole);
@@ -147,6 +138,7 @@ namespace TextAdventure.Core.Consoles.Tests
                 _disposeur?.Invoke();
                 SelectionConsole.IsVisible = true;
                 _isTestGoingOn = false;
+                Children.Add(SelectionConsole);
             }
         }
     }
